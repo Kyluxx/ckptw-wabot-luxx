@@ -18,7 +18,7 @@ global.config = {
 
         // Konfigurasi autentikasi sesi bot
         authAdapter: {
-            adapter: "default", // Adapter untuk menyimpan sesi (Pilihan adapter: default, mysql, mongo, firebase)
+            adapter: "mysql", // Adapter untuk menyimpan sesi (Pilihan adapter: default, mysql, mongo, firebase)
 
             // Konfigurasi default
             default: {

@@ -67,6 +67,6 @@ module.exports = {
             'Nggak yakin banget',
             'Serius lo?',
             'Gajelas'
-        ])}` + '\n' + config.msg.footer));
+        ])}` + '\n \n' + config.msg.footer));
     }
 };

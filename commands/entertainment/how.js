@@ -1,8 +1,3 @@
-`
-${command} *${text}*
-*${text}* is *${(101).getRandom()}*% ${command.replace('how', '').toUpperCase()}
-`
-
 const {
     quote
 } = require("@mengkodingan/ckptw");

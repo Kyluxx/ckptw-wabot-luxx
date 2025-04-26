@@ -4,6 +4,12 @@ const {
 
 const { default: axios } = require("axios");
 
+module.exports = {
+    name: "senna",
+    category: "ai-chat",
+    permissions: {
+        coin: 10
+    },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;
 
@@ -21,3 +27,4 @@ const { default: axios } = require("axios");
             return await tools.cmd.handleError(ctx, error, true);
         }
     }
+}

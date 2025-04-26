@@ -16,6 +16,6 @@ module.exports = {
     code: async (ctx) => { 
         const input = ctx.args.join(" ") || null;
 
-        return await ctx.reply(quote(`*Pertanyaan:* kapan ${input}
-> *Jawaban:*  ${Math.floor(Math.random() * 60 + 1)} ${getRandom(['detik', 'menit', 'jam', 'hari', 'minggu', 'bulan', 'tahun', 'dekade', 'abad'])} lagi ...` + '\n \n' + config.msg.footer))}
+        return await ctx.reply(quote(`*Pertanyaan:* kapankah ${input} \n`) +
+quote(`*Jawaban:*  ${Math.floor(Math.random() * 60 + 1)} ${getRandom(['detik', 'menit', 'jam', 'hari', 'minggu', 'bulan', 'tahun', 'dekade', 'abad'])} lagi ...`) + '\n \n' + config.msg.footer)}
 };

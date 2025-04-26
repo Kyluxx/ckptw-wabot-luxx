@@ -12,7 +12,8 @@ module.exports = {
     code: async (ctx) => { 
         const input = ctx.args.join(" ") || null;
 
-        return await ctx.reply(quote("Nama biasa : " + input + "\n Nama ninja : " + input.replace(/[a-z]/gi, v => {
+        return await ctx.reply(quote("Nama biasa : " + input + '\n') + 
+            quote("Nama ninja : " + input.replace(/[a-z]/gi, v => {
             return {
                 'a': 'ka',
                 'b': 'tu',
@@ -41,6 +42,6 @@ module.exports = {
                 'y': 'fu',
                 'z': 'zi'
             }[v.toLowerCase()] || v
-        }) + '\n' + config.msg.footer));
+        })) + '\n' + config.msg.footer)
     }
 };

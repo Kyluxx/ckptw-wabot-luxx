@@ -11,3 +11,6 @@ database.json
 
 # Ignore package-lock.js file
 package-lock.json
+
+# Ignore sessions created
+mysql/

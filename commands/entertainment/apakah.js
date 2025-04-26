@@ -16,8 +16,8 @@ module.exports = {
     code: async (ctx) => { 
         const input = ctx.args.join(" ") || null;
 
-        return await ctx.reply(quote(`*Pertanyaan:* apakah ${input}
-> *Jawaban:* ${getRandom([
+        return await ctx.reply(quote(`*Pertanyaan:* apakah ${input} \n`) +
+            quote(`*Jawaban:* ${getRandom([
             'Ya',
             'Yoi',
             'Iya dong',
@@ -66,7 +66,6 @@ module.exports = {
             'Coba ulang pertanyaannya deh',
             'Nggak yakin banget',
             'Serius lo?',
-            'Gajelas'
-        ])}` + '\n \n' + config.msg.footer));
+            'Gajelas' ])}`) + '\n \n' + config.msg.footer);
     }
 };

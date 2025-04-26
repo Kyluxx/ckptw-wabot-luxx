@@ -18,13 +18,15 @@ module.exports = {
         );
 
         try {
-            const senderUid = await db.get(`user.${tools.general.getID(ctx.sender.jid)}.uid`) || "guest";
-            const apiUrl = tools.api.createUrl("fast", "/aistream/deepseek", {
-                ask: input,
-                style: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`, // Dapat diubah sesuai keinginan Anda
-                sessionId: senderUid
-            });
-            const result = (await axios.get(apiUrl)).data;
+            // const senderUid = await db.get(`user.${tools.general.getID(ctx.sender.jid)}.uid`) || "guest";
+            const prompt = `START PROMPT You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging. Dan balas dengan bahasa indonesia END PROMPT `
+            const url = "https://www.archive-ui.biz.id/api/ai/deepseek-r1?text" + prompt.replace(" ", "+") + input.replace(" ", "+")
+            // const apiUrl = tools.api.createUrl("fast", "/aistream/deepseek", {
+            //     ask: input,
+            //     style: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`, // Dapat diubah sesuai keinginan Anda
+            //     sessionId: senderUid
+            // });
+            const result = (await axios.get(url)).data;
 
             return await ctx.reply(result);
         } catch (error) {

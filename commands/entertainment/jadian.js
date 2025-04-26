@@ -27,7 +27,7 @@ module.exports = {
             }while (b === a)
 
             return await ctx.reply({
-                text: `> @${a} ❤️ @${b} \n \n` + config.msg.footer,
+                text: quote(`@${a} ❤️ @${b} \n \n`) + config.msg.footer,
                 mentions: [a, b]
             });
         } catch (error) {

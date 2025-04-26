@@ -9,7 +9,7 @@ function getRandom(arr) {
 module.exports = { 
     name: "apakah", 
     aliases: ["apkh"], 
-    category: "entertaiment",
+    category: "entertainment",
     permissions: { 
         coin: 5
     },

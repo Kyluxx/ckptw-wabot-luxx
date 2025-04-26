@@ -2,6 +2,10 @@ const {
     quote
 } = require("@mengkodingan/ckptw");
 
+function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }  
+
 module.exports = { 
     name: "apakah", 
     aliases: ["apkh"], 
@@ -14,7 +18,7 @@ module.exports = {
 
         return await ctx.reply(quote(`
         *Pertanyaan:* ${input}
-        *Jawaban:* ${[[
+        *Jawaban:* ${getRandom([
             'Ya',
             'Yoi',
             'Iya dong',
@@ -64,9 +68,7 @@ module.exports = {
             'Nggak yakin banget',
             'Serius lo?',
             'Gajelas'
-          ]].getRandom()}
-          `.trim(), null, m.mentionedJid ? {
-          mentions: m.mentionedJid
-        } : {}))
+        ])}
+        `));
     }
 };

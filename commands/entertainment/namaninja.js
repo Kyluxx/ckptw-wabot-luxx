@@ -2,10 +2,6 @@ const {
     quote
 } = require("@mengkodingan/ckptw");
 
-function getRandom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }  
-
 module.exports = { 
     name: "namaninja", 
     aliases: ["ninja"], 
@@ -16,7 +12,7 @@ module.exports = {
     code: async (ctx) => { 
         const input = ctx.args.join(" ") || null;
 
-        return await ctx.reply(quote(input.replace(/[a-z]/gi, v => {
+        return await ctx.reply(quote("Nama biasa : " + input + "\n Nama ninja : " + input.replace(/[a-z]/gi, v => {
             return {
                 'a': 'ka',
                 'b': 'tu',

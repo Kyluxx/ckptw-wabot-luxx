@@ -13,7 +13,7 @@ global.config = {
         name: "Livi BOT", // Nama bot
         prefix: /^,/i, // /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
         phoneNumber: "6281233792295", // Nomor telepon bot (opsional jika menggunakan QR code)
-        thumbnail: "https://repository-images.githubusercontent.com/753096396/84e76ef0-ba19-4c87-8ec2-ea803b097479", // Gambar thumbnail bot
+        thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/wp10030222-hu-tao-pc-wallpapers.jpg", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
 
         // Konfigurasi autentikasi sesi bot
@@ -61,7 +61,7 @@ global.config = {
         restrict: quote("⛔ Perintah ini telah dibatasi karena alasan keamanan!"), // Pesan pembatasan perintah
 
         readmore: "\u200E".repeat(4001), // String read more
-        note: "“Lorem ipsum dolor sit amet, tenebris in umbra, vitae ad mortem.”", // Catatan
+        note: "Livi BOT - Developed by Kyluxx", // Catatan
         footer: italic("Developed by Kyluxx"), // Footer di pesan bot
 
         wait: quote("🔄 Tunggu sebentar..."), // Pesan loading

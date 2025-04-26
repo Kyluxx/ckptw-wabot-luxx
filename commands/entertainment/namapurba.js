@@ -12,6 +12,6 @@ module.exports = {
     code: async (ctx) => { 
         const input = ctx.args.join(" ") || null;
 
-        return await ctx.reply(quote("Nama biasa : " + input + "\n Nama purba : " + input.replace(/[aiueo]/gi, '$&ve') + '\n \n' + config.msg.footer));
+        return await ctx.reply(quote("Nama biasa : " + input + "\n> Nama purba : " + input.replace(/[aiueo]/gi, '$&ve') + '\n \n' + config.msg.footer));
     }
 };

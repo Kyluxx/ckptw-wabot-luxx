@@ -20,10 +20,10 @@ module.exports = {
         try {
             const members = await ctx.group().members();
             const mentions = members.map(m => m.id);
-            let a = getRandom(members).split('@')[0]
+            let a = getRandom(members).id.split('@')[0]
             let b
             do{ 
-                b = getRandom(members).split('@')[0]
+                b = getRandom(members).id.split('@')[0]
             }while (b === a)
 
             return await ctx.reply({

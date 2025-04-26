@@ -14,7 +14,7 @@ module.exports = {
         const input = ctx.args[1] || null;
 
         return await ctx.reply(quote(`Pertanyaan : how ${types} is *${input}*
-> *${input}* is *${Math.floor(Math.random() * 100)}*% ${types.toUpperCase()}
-        ` + '\n \n' + config.msg.footer));
+> Jawab : *${input}* is *${Math.floor(Math.random() * 100)}*% ${types.toUpperCase()}
+        ` + '\n' + config.msg.footer));
     }
 };

@@ -41,6 +41,6 @@ module.exports = {
                 'y': 'fu',
                 'z': 'zi'
             }[v.toLowerCase()] || v
-        }) + '\n \n' + config.msg.footer));
+        }) + '\n' + config.msg.footer));
     }
 };

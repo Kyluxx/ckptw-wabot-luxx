@@ -46,6 +46,9 @@ function rekapDetail(input) {
   module.exports = {
     name: "rekap",
     aliases: ["rek"],
+    permissions: {
+      premium: true
+    },
     category: "tool",
 
     code: async (ctx) => {

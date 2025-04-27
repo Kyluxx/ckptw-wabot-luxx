@@ -1,15 +1,11 @@
 const {
     quote
 } = require("@mengkodingan/ckptw");
-<<<<<<< HEAD
-
-const { default: axios } = require("axios");
-=======
 const axios = require("axios");
->>>>>>> upstream/master
 
 module.exports = {
-    name: "senna",
+    name: "luminai",
+    aliases: ["lumin"],
     category: "ai-chat",
     permissions: {
         coin: 10
@@ -23,18 +19,12 @@ module.exports = {
         ));
 
         try {
-<<<<<<< HEAD
-            const prompt = `%2F* Prompt : Akting seperti Kamu adalah bot ${config.bot.name} yang dibuat oleh ${config.owner.name}, Balas dengan bahasa indonesia*%2F Pesan : `
-            const apiUrl = "https://www.archive-ui.biz.id/api/ai/sennayapping?text=" + prompt.replace(" ", "+") + input.replace(" ", "+")
-            ctx.reply(`${(await axios.get(apiUrl)).data.result}`)
-=======
-            const apiUrl = tools.api.createUrl("archive", "/api/ai/sennayapping", {
+            const apiUrl = tools.api.createUrl("archive", "/api/ai/luminai", {
                 text: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.result.result;
 
             return await ctx.reply(result);
->>>>>>> upstream/master
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

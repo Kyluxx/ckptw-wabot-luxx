@@ -37,6 +37,7 @@ const uploader = async () => {
 
 const formatBotName = (botName) => {
     if (!botName) return null;
+
     botName = botName.toLowerCase();
     return botName.replace(/[aiueo0-9\W_]/g, "");
 }
@@ -181,7 +182,7 @@ function ucword(text) {
     return text.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
 }
 
-async function upload(buffer, type = "any", host = "FastUrl") {
+async function upload(buffer, type = "any", host = config.system.uploaderHost) {
     if (!buffer) return null;
 
     const hosts = {

@@ -2,6 +2,7 @@ const {
     monospace,
     quote
 } = require("@mengkodingan/ckptw");
+const { Consolefy } = require("@mengkodingan/consolefy");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -10,7 +11,7 @@ module.exports = {
     aliases: ["hd", "hdr", "remini"],
     category: "tool",
     permissions: {
-        coin: 10
+        coin: 20
     },
     code: async (ctx) => {
         const msgType = ctx.getMessageType();
@@ -24,10 +25,11 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.general.upload(buffer, "image");
-            const apiUrl = await tools.api.createUrl("archive", "/tools/hd", {
+            const apiUrl = await tools.api.createUrl("zell", "/tools/hd2", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.upscaled;
+            //await console.log(`Hasil Upscale: ${monospace(result)}`);
 
             return await ctx.reply({
                 image: {

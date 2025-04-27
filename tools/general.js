@@ -3,37 +3,37 @@ const api = require("./api.js");
 const axios = require("axios");
 const didYouMean = require("didyoumean");
 const util = require("node:util");
+const uploader = require("@zanixongroup/uploader");
 
-
-const uploader = async () => {
-    const fetch = require('node-fetch');
-  const FormData = require('form-data');
-  const { fromBuffer } = require('file-type');
-  /**
-  * Upload image to url
-  * Supported mimetype:
-  * - `image/jpeg`
-  * - `image/jpg`
-  * - `image/png`
-  * - `video/mp4`
-  * - `all files`
-  * @param {Buffer} buffer Image Buffer
-  */
+// const uploader = async () => {
+//     const fetch = require('node-fetch');
+//   const FormData = require('form-data');
+//   const { fromBuffer } = require('file-type');
+//   /**
+//   * Upload image to url
+//   * Supported mimetype:
+//   * - `image/jpeg`
+//   * - `image/jpg`
+//   * - `image/png`
+//   * - `video/mp4`
+//   * - `all files`
+//   * @param {Buffer} buffer Image Buffer
+//   */
   
-  module.exports = async (buffer) => {
-    let { ext } = await fromBuffer(buffer);
-    const bodyForm = new FormData();
-    bodyForm.append("file", buffer, "file." + ext);
+//   module.exports = async (buffer) => {
+//     let { ext } = await fromBuffer(buffer);
+//     const bodyForm = new FormData();
+//     bodyForm.append("file", buffer, "file." + ext);
     
-    const response = await fetch("https://file.idnet.my.id/api/upload.php", {
-      method: "POST",
-      body: bodyForm,
-    });
+//     const response = await fetch("https://file.idnet.my.id/api/upload.php", {
+//       method: "POST",
+//       body: bodyForm,
+//     });
   
-    const result = await response.json();
-    return result.file.url;
-  }
-  }
+//     const result = await response.json();
+//     return result.file.url;
+//   }
+//   }
 
 const formatBotName = (botName) => {
     if (!botName) return null;

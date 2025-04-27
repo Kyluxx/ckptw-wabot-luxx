@@ -5,12 +5,13 @@ node_modules/
 state/
 
 # Ignore config.js file
+# config.js
 
 # Ignore database.json file
-database.json
+# database.json
 
 # Ignore package-lock.js file
 package-lock.json
 
 # Ignore sessions created
-mysql/
+# mysql/

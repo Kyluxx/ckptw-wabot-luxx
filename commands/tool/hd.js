@@ -24,7 +24,7 @@ module.exports = {
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
             const uploadUrl = await tools.general.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("archive", "/tools/hd", {
+            const apiUrl = await tools.api.createUrl("archive", "/tools/hd", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.upscaled;

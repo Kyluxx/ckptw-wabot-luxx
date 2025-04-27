@@ -11,7 +11,7 @@ global.config = {
     // Informasi bot dasar
     bot: {
         name: "Livi BOT", // Nama bot
-        prefix: /^,/i, // /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
+        prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
         phoneNumber: "6281233792295", // Nomor telepon bot (opsional jika menggunakan QR code)
         thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/wp10030222-hu-tao-pc-wallpapers.jpg", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)

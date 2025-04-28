@@ -14,14 +14,14 @@ module.exports = {
         const senderId = tools.general.getID(ctx.sender.jid);
         const coinAmount = parseInt(ctx.args[mentionedJid ? 1 : 0], 10);
 
-        if ((!userJid || !coinAmount) || isNaN(coinAmount)) return await ctx.reply({
+        if (!userJid || !coinAmount || isNaN(coinAmount)) return await ctx.reply({
             text: `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
                 quote(tools.cmd.generateCommandExample(ctx.used, `@${senderId} 8`)),
-            mentions: [senderJid]
+            mentions: [senderId]
         });
 
         const [isOnWhatsApp] = await ctx.core.onWhatsApp(userJid);
-        if (isOnWhatsApp.length < 0) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
+        if (!isOnWhatsApp) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
 
         try {
             const senderCoin = await db.get(`user.${senderId}.coin`) || {};

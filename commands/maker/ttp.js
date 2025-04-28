@@ -24,11 +24,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("bk9", "/maker/text2img", {
-<<<<<<< HEAD
-                q: input,
-=======
                 q: input
->>>>>>> upstream/master
             });
             const result = new Sticker(apiUrl, {
                 pack: config.sticker.packname,

@@ -11,7 +11,7 @@ const chanceTable = {
 };
 const rewardTable = { common: 5, uncommon:10, rare:25, epic:50, mythic:100 };
 
-const COOLDOWN = 5 * 60 * 1000; // 5 menit
+const COOLDOWN = 1 * 60 * 1000; // 5 menit
 
 function getFishRarity(rod) {
   const chances = chanceTable[rod] || chanceTable.bamboo;
@@ -28,6 +28,7 @@ module.exports = {
   name: "fish",
   category: "game",
   permissions: {},
+
   code: async (ctx) => { 
     const userId = tools.general.getID(ctx.sender.jid);
     const now = Date.now();
@@ -43,10 +44,11 @@ module.exports = {
     await db.set(`user.${userId}.lastFishTime`, now);
 
     // fishing logic
-    const rod = (await db.get(`user.${userId}.rodlevel`)) ? 
-                await rod.rodlevel.toLowerCase() : 
-                (await db.set(`user.${userId}.rodlevel`, "bamboo"))
-                .then(await db.get(`user.${userId}.rodlevel`))
+    let rod = (await db.get(`user.${userId}.rodlevel`))?.toLowerCase();
+    if (!rod) {
+      rod = "bamboo";
+      await db.set(`user.${userId}.rodlevel`, rod);
+    }
     const rarity = getFishRarity(rod);
     const reward = rewardTable[rarity];
 

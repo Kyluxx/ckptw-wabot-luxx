@@ -19,7 +19,7 @@ module.exports = {
         );
 
         try {
-            const apiUrl = tools.api.createUrl("archive", "/search/yahoosearch", {
+            const apiUrl = tools.api.createUrl("archive", "/api/search/yahoosearch", {
                 q: input
             });
             const result = (await axios.get(apiUrl)).data.result;

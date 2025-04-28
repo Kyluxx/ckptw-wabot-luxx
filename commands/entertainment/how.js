@@ -19,13 +19,14 @@ module.exports = {
 
         if (!input) return await ctx.reply(
             `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "itsreimau"))
+            `${quote(tools.cmd.generateCommandExample(ctx.used, "itsreimau"))}\n` +
+            quote(tools.cmd.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
         );
 
         try {
             const randomNumber = Math.floor(Math.random() * 100);
 
-            return await ctx.reply(quote(`${input} itu ${randomNumber}% ${tools.general.ucword(ctx.used.command.replace("how", ""))}`));
+            return await ctx.reply(quote(`${input} itu ${randomNumber}% ${(ctx.used.command.replace("how", "")).toLowerCase()}`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

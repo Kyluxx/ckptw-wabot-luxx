@@ -22,11 +22,7 @@ module.exports = {
             const apiUrl = tools.api.createUrl("agatz", "/api/lirik", {
                 message: input
             });
-<<<<<<< HEAD
-            const result = ((await axios.get(apiUrl)).data.data);
-=======
             const result = (await axios.get(apiUrl)).data.data;
->>>>>>> upstream/master
 
             return await ctx.reply(
                 `${quote(`Judul: ${result.title}`)}\n` +

@@ -32,10 +32,10 @@ module.exports = {
                 audio: {
                     url: result
                 },
-                mimetype: mime.lookup("mp3"),
-                caption: `${quote(`URL: ${url}`)}\n` +
-                    "\n" +
-                    config.msg.footer
+                // mimetype: mime.lookup("mp3"),
+                // caption: `${quote(`URL: ${url}`)}\n` +
+                //     "\n" +
+                //     config.msg.footer
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

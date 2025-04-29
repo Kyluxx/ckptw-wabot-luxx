@@ -90,8 +90,8 @@ global.config = {
         autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
         autoRead: true, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
-        cooldown: 1 * 1000, // Jeda antar perintah (ms)
-        maxListeners: 100, // Max listeners untuk events
+        cooldown: 100, // Jeda antar perintah (ms)
+        maxListeners: 50, // Max listeners untuk events
         port: 3000, // Port (jika pakai server)
         reportErrorToOwner: true, // Laporkan kesalahan ke owner bot
         restrict: false, // Batasi akses perintah

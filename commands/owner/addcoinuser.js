@@ -19,7 +19,7 @@ module.exports = {
         if ((!userJid || !coinAmount) || isNaN(coinAmount)) return await ctx.reply({
             text: `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
                 quote(tools.cmd.generateCommandExample(ctx.used, `@${senderId} 8`)),
-            mentions: [senderJid]
+            mentions: [senderId]
         });
 
         const isOnWhatsApp = await ctx.core.onWhatsApp(userJid);

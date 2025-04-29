@@ -12,7 +12,7 @@ global.config = {
     bot: {
         name: "Livi BOT", // Nama bot
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
-        phoneNumber: "6281233792295", // Nomor telepon bot (opsional jika menggunakan QR code)
+        phoneNumber: "6287883818502", // Nomor telepon bot (opsional jika menggunakan QR code)
         thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/wp10030222-hu-tao-pc-wallpapers.jpg", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
 
@@ -90,8 +90,8 @@ global.config = {
         autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
         autoRead: true, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
-        cooldown: 100, // Jeda antar perintah (ms)
-        maxListeners: 50, // Max listeners untuk events
+        cooldown: 1 * 1000, // Jeda antar perintah (ms)
+        maxListeners: 100, // Max listeners untuk events
         port: 3000, // Port (jika pakai server)
         reportErrorToOwner: true, // Laporkan kesalahan ke owner bot
         restrict: false, // Batasi akses perintah

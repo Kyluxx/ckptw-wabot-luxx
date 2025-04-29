@@ -20,7 +20,7 @@ COPY . .
 # npm run install:adapter
 
 # Install PM2
-RUN npm install pm2 -g
+# RUN npm install pm2 -g
 
 # Command to run the application
-CMD ["pm2", "start", "index.js"]
+CMD ["node", "index.js"]

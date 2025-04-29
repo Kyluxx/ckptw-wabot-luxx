@@ -86,7 +86,7 @@ global.config = {
     // Sistem bot
     system: {
         alwaysOnline: true, // Bot selalu berstatus "online"
-        antiCall: false, // Bot secara otomatis membanned orang yang menelepon
+        antiCall: true, // Bot secara otomatis membanned orang yang menelepon
         autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
         autoRead: true, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
@@ -102,6 +102,6 @@ global.config = {
         uploaderHost: "Ryzen", // Host uploader untuk menyimpan media (Tersedia: Catbox, Cloudku, Erhabot, FastUrl, IDNet, Litterbox, Pomf, Quax, quax, ryzen, shojib, TmpErhabot, Uguu, Videy)
         useCoin: true, // Pakai koin
         usePairingCode: true, // Pakai kode pairing untuk koneksi
-        useServer: false // Jalankan bot dengan server
+        useServer: true // Jalankan bot dengan server
     }
 };

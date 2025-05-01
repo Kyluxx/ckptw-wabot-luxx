@@ -72,7 +72,7 @@ module.exports = {
           collector.stop();
         } else if (cmd === 'double') {
           // attempt next flip
-          const winNext = Math.random() < 0.5;
+          const winNext = Math.random() < 0.4;
           if (!winNext) {
             sessions.delete(chatId);
             await ctx.sendMessage(chatId, { text: quote(

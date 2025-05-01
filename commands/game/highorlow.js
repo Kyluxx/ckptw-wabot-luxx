@@ -44,9 +44,9 @@ module.exports = {
       // undi nomor acak 1-99
       const result = Math.floor(Math.random() * 99) + 1;
       let area;
-      if (result > 50) area = "high";
-      else if (result < 50) area = "low";
-      else area = "middle"; // tepat 50
+      if (result > 60) area = "high";
+      else if (result < 40) area = "low";
+      else if (result < 60 && result > 40) area = "middle"; // tepat 50
 
       // teks permainan seru
       let text = "🎲 Selamat datang di High-Middle-Low! 🎲\n\n";

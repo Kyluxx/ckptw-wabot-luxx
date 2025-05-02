@@ -86,8 +86,8 @@ Gunakan ${monospace(ctx.used.prefix + ctx.used.command + ' list')} untuk daftar.
       if (credz < info.price) {
         return ctx.reply(quote(`💔 Credz mu kurang! Butuh ${monospace(info.price)} untuk upgrade ke ${monospace(info.next)}.`));
       }
-      await db.add(`user.${userId}.coin`, -info.price);
-      costMsg = `- ${monospace(info.price + ' koin')}`;
+      await db.subtract(`user.${userId}.credz`, info.price);
+      costMsg = `- ${monospace(info.price + ' credz')}`;
     } else {
       costMsg = `🔓 Gratis upgrade untuk ${isOwner ? 'Owner' : 'Premium User'}!`;
     }

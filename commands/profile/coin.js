@@ -10,10 +10,14 @@ module.exports = {
         const userDb = await db.get(`user.${senderId}`) || {};
         const mentionJids = ctx._msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
 
+<<<<<<< HEAD
         // Owners and premium users have unlimited coins
         if ((tools.general.isOwner(senderId) || userDb.premium) && !mentionJids.length) {
             return await ctx.reply(quote("🤑 Anda memiliki koin tak terbatas."));
         }
+=======
+        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("🤑 Anda memiliki koin tak terbatas."));
+>>>>>>> upstream/master
 
         try {
             // Check for mentioned JIDs in the message

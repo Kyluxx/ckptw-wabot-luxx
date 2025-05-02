@@ -1,6 +1,7 @@
 const {
     quote
 } = require("@mengkodingan/ckptw");
+const axios = require("axios");
 const mime = require("mime-types");
 
 module.exports = {
@@ -43,12 +44,17 @@ module.exports = {
                             }
                         }
                     };
+                    const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+                        url: config.bot.thumbnail
+                    }))).data.result;
+
                     await ctx.sendMessage(groupId, {
-                        image: {
-                            url: config.bot.thumbnail
+                        video: {
+                            url
                         },
-                        mimetype: mime.lookup("png"),
+                        mimetype: mime.lookup("mp4"),
                         caption: input,
+                        gifPlayback: true,
                         contextInfo: {
                             forwardingScore: 9999,
                             isForwarded: true

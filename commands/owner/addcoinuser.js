@@ -12,7 +12,7 @@ module.exports = {
     code: async (ctx) => {
         const mentionedJid = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
         const userId = ctx.args[0];
-        const userJid = mentionedJid || (userId ? `${userId}@s.whatsapp.net` : null) || ctx.quoted.senderJid;
+        const userJid = ctx.quoted.senderJid || mentionedJid || (userId ? `${userId}@s.whatsapp.net` : null);
         const senderId = tools.general.getID(ctx.sender.jid);
         const coinAmount = parseInt(ctx.args[mentionedJid ? 1 : 0], 10);
 
@@ -22,8 +22,8 @@ module.exports = {
             mentions: [senderId]
         });
 
-        const isOnWhatsApp = await ctx.core.onWhatsApp(userJid);
-        if (isOnWhatsApp.length < 0) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
+        const [isOnWhatsApp] = await ctx.core.onWhatsApp(userJid);
+        if (!isOnWhatsApp.exists) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
 
         try {
             await db.add(`user.${tools.general.getID(userJid)}.coin`, coinAmount);

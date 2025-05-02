@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 const { quote } = require("@mengkodingan/ckptw");
+=======
+const {
+    quote
+} = require("@mengkodingan/ckptw");
+const axios = require("axios");
+>>>>>>> upstream/master
 const mime = require("mime-types");
 
 module.exports = {
@@ -16,10 +23,27 @@ module.exports = {
       const targetJid = isMention ? mentionJids[0] : senderJid;
       const targetId = tools.general.getID(targetJid);
 
+<<<<<<< HEAD
       // Build leaderboard
       const leaderboardData = Object.entries((await db.toJSON()).user)
         .map(([id, data]) => ({ id, winGame: data.winGame || 0, level: data.level || 0 }))
         .sort((a, b) => b.winGame - a.winGame || b.level - a.level);
+=======
+            const userDb = await db.get(`user.${senderId}`) || {};
+            const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
+            const isOwner = tools.general.isOwner(senderId, ctx.msg.key.id);
+            const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
+            const canvas = tools.api.createUrl("fast", "/canvas/rank", {
+                avatar: profilePictureUrl,
+                background: config.bot.thumbnail,
+                username: senderName,
+                status: "online",
+                level: userDb?.level,
+                rank: userRank,
+                currentXp: userDb?.xp,
+                requiredXp: "100"
+            });
+>>>>>>> upstream/master
 
       // Fetch target data
       const targetDb = (await db.get(`user.${targetId}`)) || {};
@@ -27,6 +51,7 @@ module.exports = {
       const isOwner = tools.general.isOwner(targetId);
       const statusLabel = isOwner ? "Owner" : targetDb.premium ? "Premium" : "Freemium";
 
+<<<<<<< HEAD
       // Get names
       const displayName = isMention
         ? targetDb.username || targetJid
@@ -75,6 +100,26 @@ module.exports = {
       }
     } catch (error) {
       return await tools.cmd.handleError(ctx, error, false);
+=======
+            try {
+                const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+                    url: canvas
+                }))).data.result;
+                return await ctx.reply({
+                    video: {
+                        url
+                    },
+                    mimetype: mime.lookup("mp4"),
+                    caption: text,
+                    gifPlayback: true
+                });
+            } catch (error) {
+                if (error.status !== 200) return await ctx.reply(text);
+            }
+        } catch (error) {
+            return await tools.cmd.handleError(ctx, error, false);
+        }
+>>>>>>> upstream/master
     }
   }
 };

@@ -1,7 +1,7 @@
-# Ignore node_modules directory
+# Abaikan direktori 'node_modules'
 node_modules/
 
-# Ignore state directory
+# Abaikan direktori 'state'
 state/
 
 # Ignore config.js file

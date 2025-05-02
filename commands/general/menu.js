@@ -4,6 +4,7 @@ const {
     monospace,
     quote
 } = require("@mengkodingan/ckptw");
+const axios = require("axios");
 const mime = require("mime-types");
 const moment = require("moment-timezone");
 
@@ -89,13 +90,17 @@ module.exports = {
                     }
                 }
             };
+            const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+                url: config.bot.thumbnail
+            }))).data.result;
 
             return await ctx.sendMessage(ctx.id, {
-                image: {
-                    url: config.bot.thumbnail
+                video: {
+                    url
                 },
-                mimetype: mime.lookup("png"),
+                mimetype: mime.lookup("mp4"),
                 caption: text,
+                gifPlayback: true,
                 contextInfo: {
                     mentionedJid: [ctx.sender.jid],
                     forwardingScore: 9999,

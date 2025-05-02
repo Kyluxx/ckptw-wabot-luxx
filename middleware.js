@@ -8,13 +8,13 @@ const axios = require("axios");
 const mime = require("mime-types");
 
 // Fungsi untuk mengecek apakah pengguna memiliki cukup Credz sebelum menggunakan perintah tertentu
-async function checkCoin(requiredCoin, senderId, messageId) {
+async function checkCredz(requiredCredz, senderId, messageId) {
     const userDb = await db.get(`user.${senderId}`) || {};
 
     if (tools.general.isOwner(senderId, messageId) || userDb?.premium) return false;
-    if ((userDb?.credz || 0) < requiredCoin) return true;
+    if ((userDb?.credz || 0) < requiredCredz) return true;
 
-    await db.subtract(`user.${senderId}.credz`, requiredCoin);
+    await db.subtract(`user.${senderId}.credz`, requiredCredz);
     return false;
 }
 
@@ -147,7 +147,7 @@ module.exports = (bot) => {
             },
             {
                 key: "credz",
-                condition: permissions.credz && config.system.useCoin && await checkCoin(permissions.credz, senderId, ctx.msg.key.id),
+                condition: permissions.credz && config.system.useCredz && await checkCredz(permissions.credz, senderId, ctx.msg.key.id),
                 msg: config.msg.credz,
                 reaction: "💰"
             },

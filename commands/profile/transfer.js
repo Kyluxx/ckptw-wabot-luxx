@@ -12,9 +12,9 @@ module.exports = {
         const userId = ctx.args[0];
         const userJid = ctx.quoted.senderJid || mentionedJid || (userId ? `${userId}@s.whatsapp.net` : null);
         const senderId = tools.general.getID(ctx.sender.jid);
-        const coinAmount = parseInt(ctx.args[mentionedJid ? 1 : 0], 10);
+        const credzAmount = parseInt(ctx.args[mentionedJid ? 1 : 0], 10);
 
-        if (!userJid || !coinAmount || isNaN(coinAmount)) return await ctx.reply({
+        if (!userJid || !credzAmount || isNaN(credzAmount)) return await ctx.reply({
             text: `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
                 quote(tools.cmd.generateCommandExample(ctx.used, `@${senderId} 8`)),
             mentions: [senderId]
@@ -27,13 +27,13 @@ module.exports = {
 
         if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Credz tak terbatas tidak dapat ditransfer."));
 
-        if (userDb?.credz < coinAmount) return await ctx.reply(quote("❎ Credz Anda tidak mencukupi untuk transfer ini!"));
+        if (userDb?.credz < credzAmount) return await ctx.reply(quote("❎ Credz Anda tidak mencukupi untuk transfer ini!"));
 
         try {
-            await db.add(`user.${tools.general.getID(userJid)}.credz`, coinAmount);
-            await db.subtract(`user.${senderId}.credz`, coinAmount);
+            await db.add(`user.${tools.general.getID(userJid)}.credz`, credzAmount);
+            await db.subtract(`user.${senderId}.credz`, credzAmount);
 
-            return await ctx.reply(quote(`✅ Berhasil mentransfer ${coinAmount} Credz ke pengguna!`));
+            return await ctx.reply(quote(`✅ Berhasil mentransfer ${credzAmount} Credz ke pengguna!`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

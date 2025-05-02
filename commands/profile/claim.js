@@ -39,11 +39,11 @@ module.exports = {
         if (remainingTime > 0) return await ctx.reply(quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.general.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
-            const rewardCoin = (userDb?.credz || 0) + claimRewards[input].reward;
-            await db.set(`user.${senderId}.credz`, rewardCoin);
+            const rewardCredz = (userDb?.credz || 0) + claimRewards[input].reward;
+            await db.set(`user.${senderId}.credz`, rewardCredz);
             await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
 
-            return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claimRewards[input].reward} Credz! Credz saat ini: ${rewardCoin}.`));
+            return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claimRewards[input].reward} Credz! Credz saat ini: ${rewardCredz}.`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }
@@ -60,16 +60,16 @@ const claimRewards = {
     weekly: {
         reward: 500,
         cooldown: 7 * 24 * 60 * 60 * 1000, // 7 hari (500 Credz)
-        level: 15
+        level: 25
     },
     monthly: {
-        reward: 2000,
+        reward: 2500,
         cooldown: 30 * 24 * 60 * 60 * 1000, // 30 hari (2000 Credz)
-        level: 50
+        level: 75
     },
     yearly: {
         reward: 10000,
-        cooldown: 365 * 24 * 60 * 60 * 1000, // 365 hari (10000 Credz)
-        level: 75
+        cooldown: 365 * 24 * 60 * 60 * 1000, // 365 hari (5000 Credz)
+        level: 150
     }
 };

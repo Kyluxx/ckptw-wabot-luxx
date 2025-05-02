@@ -12,9 +12,9 @@ global.config = {
     bot: {
         name: "Livi BOT", // Nama bot
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
-        phoneNumber: "6287786026900", // Nomor telepon bot (opsional jika menggunakan QR code)
-        thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/hutao_gif.gif", // Gambar thumbnail bot
-        groupJid: "", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
+        phoneNumber: "6281325174404", // Nomor telepon bot (opsional jika menggunakan QR code)
+        thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/hu-tao.gif", // Gambar thumbnail bot
+        groupJid: "120363417850831926@g.us", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
 
         // Konfigurasi autentikasi sesi bot
         authAdapter: {
@@ -86,7 +86,7 @@ global.config = {
     // Sistem bot
     system: {
         alwaysOnline: true, // Bot selalu berstatus "online"
-        antiCall: true, // Bot secara otomatis membanned orang yang menelepon
+        antiCall: false, // Bot secara otomatis membanned orang yang menelepon
         autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
         autoRead: true, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
@@ -95,12 +95,12 @@ global.config = {
         port: 3000, // Port (jika pakai server)
         reportErrorToOwner: true, // Laporkan kesalahan ke owner bot
         restrict: false, // Batasi akses perintah
-        requireBotGroupMembership: false, // Harus gabung grup bot
+        requireBotGroupMembership: true, // Harus gabung grup bot
         selfOwner: false, // Bot jadi owner sendiri
         selfReply: true, // Bot balas pesan bot sendiri
         timeZone: "Asia/Jakarta", // Zona waktu bot
         uploaderHost: "Ryzen", // Host uploader untuk menyimpan media (Tersedia: Catbox, Cloudku, Erhabot, FastUrl, IDNet, Litterbox, Pomf, Quax, quax, ryzen, shojib, TmpErhabot, Uguu, Videy)
-        useCoin: true, // Pakai Credz
+        useCredz: true, // Pakai Credz
         usePairingCode: true, // Pakai kode pairing untuk koneksi
         useServer: false // Jalankan bot dengan server
     }

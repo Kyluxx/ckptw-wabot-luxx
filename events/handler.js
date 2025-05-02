@@ -148,7 +148,7 @@ module.exports = (bot) => {
             config.bot.dbSize = fs.existsSync("database.json") ? tools.general.formatSize(fs.statSync("database.json").size / 1024) : "N/A"; // Penangan pada ukuran basis data
 
             // Penanganan basis data pengguna
-            if (isOwner || userDb?.premium) db.set(`user.${senderId}.credz`, 0);
+            if (isOwner || userDb?.premium) db.set(`user.${senderId}.credz`, 696969);
             if (userDb?.credz !== 0 && (userDb?.credz === undefined || !Number.isFinite(userDb?.credz))) db.set(`user.${senderId}.credz`, 50);
             //if (userDb?.credz > 10000) db.set(`user.${senderId}.credz`, 10000);
             if (userDb?.uid !== tools.general.generateUID(senderId, true)) db.set(`user.${senderId}.uid`, tools.general.generateUID(senderId, true));

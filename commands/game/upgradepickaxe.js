@@ -13,8 +13,8 @@ module.exports = {
     // mapping upgrade: current → { next, price }
     const upgradeMap = {
       stone:  { next: "iron",    price: 500 },
-      iron:   { next: "golden",  price: 2000 },
-      golden: { next: "iridium", price: 8000 }
+      iron:   { next: "golden",  price: 1750 },
+      golden: { next: "iridium", price: 7000 }
     };
 
     // .upick list: tampilkan shop pickaxe

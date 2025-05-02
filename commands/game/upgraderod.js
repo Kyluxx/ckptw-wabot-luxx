@@ -13,9 +13,9 @@ module.exports = {
     // Mapping upgrade: current → { next level, price }
     const upgradeMap = {
       bamboo:  { next: "iron",    price: 500 },
-      iron:    { next: "gold",    price: 2000
+      iron:    { next: "gold",    price: 1500
        },
-      gold:    { next: "iridium", price: 8000 }
+      gold:    { next: "iridium", price: 5000 }
     };
 
     // List command: show shop-like list of rods with upgrade prices

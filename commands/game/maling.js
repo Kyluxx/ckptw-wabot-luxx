@@ -36,23 +36,23 @@ module.exports = {
         );
       }
 
-      await db.set(`user.${senderId}.cd.maling`, Date.now() + 600000);
-
       // Owners & Premium bypass
 
 
       // Prevent robbing when target has no credz
-      const maxRob = Math.floor(targetDb.credz * 0.5);
+      const maxRob = Math.floor(targetDb.credz * 0.35);
       if (maxRob < 1) {
         return await ctx.reply(quote("Target tidak memiliki Credz untuk dimaling"));
       }
+
+      await db.set(`user.${senderId}.cd.maling`, Date.now() + 600000);
 
       // Determine amount to rob
       const robCredz = Math.floor(Math.random() * maxRob) + 1;
 
       // Crime history & fine calculation
       const historyCount = (await db.get(`user.${senderId}.crimehistory`)) || 0;
-      const fine = Math.floor(robCredz * Math.pow(1.5, historyCount));
+      const fine = robCredz + historyCount;
 
       // Success chance
       const SUCCESS_RATE = 0.4;

@@ -25,7 +25,9 @@ module.exports = {
 
         const userDb = await db.get(`user.${senderId}`) || {};
 
-        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Credz tak terbatas tidak dapat ditransfer."));
+        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) {
+            return await ctx.reply(quote("Credz tak terbatas, transfer paksa diaktifkan \n BERHASIL TRANSFER: " + credzAmount + " Credz"));
+        }
 
         if (userDb?.credz < credzAmount) return await ctx.reply(quote("❎ Credz Anda tidak mencukupi untuk transfer ini!"));
 

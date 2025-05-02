@@ -43,8 +43,8 @@ module.exports = {
       if (coin < amount) {
         return ctx.reply(quote("Anda tidak memiliki koin yang cukup!"));
       }
-      if (amount > 1000) {
-        return ctx.reply(quote("Maksimal taruhan adalah 1000 koin!"));
+      if (amount > 500) {
+        return ctx.reply(quote("Maksimal taruhan adalah 500 koin!"));
       }
 
       // spin roulette immediately

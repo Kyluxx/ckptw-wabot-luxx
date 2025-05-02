@@ -15,7 +15,7 @@ module.exports = {
       const targetJid = quoted || mention || (argId ? `${argId}@s.whatsapp.net` : null);
 
       if (!targetJid) {
-        return await ctx.reply(quote("🤑 Silakan mention atau input ID target yang ingin dirob"));
+        return await ctx.reply(quote(" Silakan mention atau input ID target yang ingin dirob"));
       }
 
       // IDs
@@ -37,7 +37,9 @@ module.exports = {
       }
 
       // Owners & Premium bypass
-
+      if(targetDb?.premium || targetDb.isOwner){
+        return await ctx.reply(quote("Mau maling apa ya? Pergi jauh jauh"))
+      }
 
       // Prevent robbing when target has no credz
       const maxRob = Math.floor(targetDb.credz * 0.35);

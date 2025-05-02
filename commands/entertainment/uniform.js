@@ -4,7 +4,7 @@ module.exports = {
     name: "uniform",
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         try {

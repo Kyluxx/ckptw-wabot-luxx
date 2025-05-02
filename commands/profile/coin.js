@@ -1,8 +1,8 @@
 const { quote } = require("@mengkodingan/ckptw");
 
 module.exports = {
-    name: "coin",
-    aliases: ["koin"],
+    name: "credz",
+    aliases: ["Credz"],
     category: "profile",
     code: async (ctx) => {
         const senderJid = ctx.sender.jid;
@@ -10,14 +10,7 @@ module.exports = {
         const userDb = await db.get(`user.${senderId}`) || {};
         const mentionJids = ctx._msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
 
-<<<<<<< HEAD
-        // Owners and premium users have unlimited coins
-        if ((tools.general.isOwner(senderId) || userDb.premium) && !mentionJids.length) {
-            return await ctx.reply(quote("🤑 Anda memiliki koin tak terbatas."));
-        }
-=======
-        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("🤑 Anda memiliki koin tak terbatas."));
->>>>>>> upstream/master
+        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("🤑 Anda memiliki Credz tak terbatas."));
 
         try {
             // Check for mentioned JIDs in the message
@@ -28,19 +21,19 @@ module.exports = {
 
                 // If the user mentioned themselves, show their own coins
                 if (targetId === senderId) {
-                    const userCoin = userDb.coin || 0;
-                    return await ctx.reply(quote(`💰 Anda memiliki ${userCoin} koin tersisa.`));
+                    const userCoin = userDb.credz || 0;
+                    return await ctx.reply(quote(`💰 Anda memiliki ${userCoin} Credz tersisa.`));
                 }
 
                 // Otherwise, fetch the mentioned user's data
                 const targetDb = await db.get(`user.${targetId}`) || {};
-                const targetCoin = targetDb.coin || 0;
-                return await ctx.reply(quote(`💰 Pengguna ini memiliki ${targetCoin} koin.`));
+                const targetCoin = targetDb.credz || 0;
+                return await ctx.reply(quote(`💰 Pengguna ini memiliki ${targetCoin} Credz.`));
             }
 
             // No mentions: show the sender's coins
-            const userCoin = userDb.coin || 0;
-            return await ctx.reply(quote(`💰 Anda memiliki ${userCoin} koin tersisa.`));
+            const userCoin = userDb.credz || 0;
+            return await ctx.reply(quote(`💰 Anda memiliki ${userCoin} Credz tersisa.`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

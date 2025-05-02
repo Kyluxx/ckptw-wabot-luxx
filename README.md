@@ -127,7 +127,7 @@ Untuk menambahkan perintah baru, ikuti langkah-langkah berikut:
        permissions: { // Pengaturan khusus untuk perintah ini
            admin: Boolean, // Apakah hanya admin grup yang bisa menggunakan perintah ini? (true/false)
            botAdmin: Boolean, // Apakah bot harus menjadi admin agar bisa menjalankan perintah ini? (true/false)
-           coin: Number, // Jumlah koin yang diperlukan untuk menjalankan perintah ini
+           credz: Number, // Jumlah Credz yang diperlukan untuk menjalankan perintah ini
            group: Boolean, // Apakah perintah ini hanya bisa digunakan di dalam grup? (true/false)
            owner: Boolean, // Apakah hanya owner bot yang bisa menggunakan perintah ini? (true/false)
            premium: Boolean, // Apakah hanya pengguna premium yang bisa menggunakan perintah ini? (true/false)

@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["playstore", "playstores"],
     category: "search",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

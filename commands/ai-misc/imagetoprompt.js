@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["image2prompt", "img2prompt", "imgtoprompt"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const msgType = ctx.getMessageType();

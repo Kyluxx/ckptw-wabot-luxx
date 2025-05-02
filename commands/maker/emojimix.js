@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["emix"],
     category: "maker",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const emojisString = ctx.args.join("");

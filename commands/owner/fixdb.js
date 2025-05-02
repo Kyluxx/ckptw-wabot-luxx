@@ -39,7 +39,7 @@ module.exports = {
                             timestamp: "number"
                         },
                         banned: "boolean",
-                        coin: "number",
+                        credz: "number",
                         lastClaim: {
                             daily: "number",
                             weekly: "number",
@@ -51,7 +51,7 @@ module.exports = {
                             cooldown: "boolean",
                             admin: "boolean",
                             botAdmin: "boolean",
-                            coin: "boolean",
+                            credz: "boolean",
                             group: "boolean",
                             owner: "boolean",
                             premium: "boolean",

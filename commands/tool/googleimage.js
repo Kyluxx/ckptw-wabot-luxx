@@ -9,7 +9,7 @@ module.exports = {
     aliases: ["gimage"],
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

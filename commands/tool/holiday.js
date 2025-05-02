@@ -10,7 +10,7 @@ module.exports = {
     aliases: ["harilibur", "libur"],
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const month = new Date().getMonth() + 1;

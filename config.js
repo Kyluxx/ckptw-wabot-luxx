@@ -13,7 +13,7 @@ global.config = {
         name: "Livi BOT", // Nama bot
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
         phoneNumber: "6287786026900", // Nomor telepon bot (opsional jika menggunakan QR code)
-        thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/wp10030222-hu-tao-pc-wallpapers.jpg", // Gambar thumbnail bot
+        thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/hutao_gif.gif", // Gambar thumbnail bot
         groupJid: "", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
 
         // Konfigurasi autentikasi sesi bot
@@ -52,7 +52,7 @@ global.config = {
         banned: quote("⛔ Tidak dapat memproses karena Anda telah dibanned oleh Owner!"), // Pesan untuk pengguna yang dibanned
         botAdmin: quote("⛔ Tidak dapat memproses karena bot bukan admin grup ini!"), // Pesan jika bot bukan admin di grup
         botGroupMembership: quote(`⛔ Tidak dapat memproses karena Anda tidak bergabung dengan grup bot! Ketik ${monospace("/botgroup")} untuk mendapatkan tautan grup bot.`),
-        coin: quote("⛔ Tidak dapat memproses karena koin Anda tidak cukup!"), // Pesan saat koin tidak cukup
+        credz: quote("⛔ Tidak dapat memproses karena Credz Anda tidak cukup!"), // Pesan saat Credz tidak cukup
         cooldown: quote("🔄 Perintah ini sedang dalam cooldown, tunggu..."), // Pesan saat cooldown perintah
         group: quote("⛔ Perintah hanya dapat diakses dalam grup!"), // Pesan untuk perintah grup
         owner: quote("⛔ Perintah hanya dapat diakses Owner!"), // Pesan untuk perintah yang hanya owner bisa akses
@@ -100,7 +100,7 @@ global.config = {
         selfReply: true, // Bot balas pesan bot sendiri
         timeZone: "Asia/Jakarta", // Zona waktu bot
         uploaderHost: "Ryzen", // Host uploader untuk menyimpan media (Tersedia: Catbox, Cloudku, Erhabot, FastUrl, IDNet, Litterbox, Pomf, Quax, quax, ryzen, shojib, TmpErhabot, Uguu, Videy)
-        useCoin: true, // Pakai koin
+        useCoin: true, // Pakai Credz
         usePairingCode: true, // Pakai kode pairing untuk koneksi
         useServer: false // Jalankan bot dengan server
     }

@@ -8,7 +8,7 @@ module.exports = {
     name: "fufufafa",
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const apiUrl = tools.api.createUrl("https://fufufafapi.vanirvan.my.id", "/api", {});

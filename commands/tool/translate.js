@@ -9,7 +9,7 @@ module.exports = {
     aliases: ["tr"],
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         let input = ctx.args.slice(ctx.args[0]?.length === 2 ? 1 : 0).join(" ") || ctx.quoted.conversation || Object.values(ctx.quoted).map(v => v?.text || v?.caption).find(Boolean) || null;

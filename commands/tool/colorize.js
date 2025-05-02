@@ -7,7 +7,7 @@ module.exports = {
     name: "colorize",
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const msgType = ctx.getMessageType();

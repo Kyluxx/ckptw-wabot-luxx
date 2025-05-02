@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["iq", "testiq"],
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const winGame = await db.get(`user.${tools.general.getID(ctx.sender.jid)}.winGame`) || 0;

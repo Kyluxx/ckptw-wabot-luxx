@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["animbratg", "animbratv", "animbratvid", "animbratvideo", "sanimbratgif", "sanimbratvideo", "sanimbratvid", "stickeranimbratgif", "stickeranimbratvideo", "stickeranimbratvid", "stikeranimbratgif", "stikeranimbratvideo", "stikeranimbratvid"],
     category: "maker",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

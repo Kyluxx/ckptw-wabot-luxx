@@ -52,7 +52,7 @@ global.config = {
         banned: quote("⛔ Tidak dapat memproses karena Anda telah dibanned oleh Owner!"), // Pesan untuk pengguna yang dibanned
         botAdmin: quote("⛔ Tidak dapat memproses karena bot bukan admin grup ini!"), // Pesan jika bot bukan admin di grup
         botGroupMembership: quote(`⛔ Tidak dapat memproses karena Anda tidak bergabung dengan grup bot! Ketik ${monospace("/botgroup")} untuk mendapatkan tautan grup bot.`),
-        coin: quote("⛔ Tidak dapat memproses karena koin Anda tidak cukup!"), // Pesan saat koin tidak cukup
+        credz: quote("⛔ Tidak dapat memproses karena Credz Anda tidak cukup!"), // Pesan saat Credz tidak cukup
         cooldown: quote("🔄 Perintah ini sedang dalam cooldown, tunggu..."), // Pesan saat cooldown perintah
         group: quote("⛔ Perintah hanya dapat diakses dalam grup!"), // Pesan untuk perintah grup
         owner: quote("⛔ Perintah hanya dapat diakses Owner!"), // Pesan untuk perintah yang hanya owner bisa akses
@@ -100,7 +100,7 @@ global.config = {
         selfReply: true, // Bot balas pesan bot sendiri
         timeZone: "Asia/Jakarta", // Zona waktu bot
         uploaderHost: "Nyxs", // Host uploader untuk menyimpan media (Tersedia: Catbox, Cloudku, Erhabot, FastUrl, IDNet, Litterbox, Nyxs, Pomf, Quax, quax, ryzen, shojib, TmpErhabot, Uguu, Videy)
-        useCoin: true, // Pakai koin
+        useCoin: true, // Pakai Credz
         usePairingCode: false, // Pakai kode pairing untuk koneksi
         useServer: false // Jalankan bot dengan server
     }

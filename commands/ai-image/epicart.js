@@ -9,7 +9,7 @@ module.exports = {
     aliases: ["epic"],
     category: "ai-image",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

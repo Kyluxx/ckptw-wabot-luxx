@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["hd", "hdr", "remini"],
     category: "tool",
     permissions: {
-        coin: 20
+        credz: 20
     },
     code: async (ctx) => {
         const msgType = ctx.getMessageType();

@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["furbratg", "furbratv", "furbratvid", "furbratvideo", "sfurbratgif", "sfurbratvideo", "sfurbratvid", "stickerfurbratgif", "stickerfurbratvideo", "stickerfurbratvid", "stikerfurbratgif", "stikerfurbratvideo", "stikerfurbratvid"],
     category: "maker",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

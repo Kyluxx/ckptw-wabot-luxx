@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["quote"],
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const apiUrl = tools.api.createUrl("https://jagokata-api.vercel.app", "/acak", {});

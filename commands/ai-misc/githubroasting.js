@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["ghroast", "ghroasting", "githubroast"],
     category: "ai-misc",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

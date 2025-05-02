@@ -21,23 +21,19 @@ module.exports = {
         });
 
         const [isOnWhatsApp] = await ctx.core.onWhatsApp(userJid);
-<<<<<<< HEAD
-        if (!isOnWhatsApp) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
-=======
         if (!isOnWhatsApp.exists) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
 
         const userDb = await db.get(`user.${senderId}`) || {};
 
-        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Koin tak terbatas tidak dapat ditransfer."));
+        if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Credz tak terbatas tidak dapat ditransfer."));
 
-        if (userDb?.coin < coinAmount) return await ctx.reply(quote("❎ Koin Anda tidak mencukupi untuk transfer ini!"));
->>>>>>> upstream/master
+        if (userDb?.credz < coinAmount) return await ctx.reply(quote("❎ Credz Anda tidak mencukupi untuk transfer ini!"));
 
         try {
-            await db.add(`user.${tools.general.getID(userJid)}.coin`, coinAmount);
-            await db.subtract(`user.${senderId}.coin`, coinAmount);
+            await db.add(`user.${tools.general.getID(userJid)}.credz`, coinAmount);
+            await db.subtract(`user.${senderId}.credz`, coinAmount);
 
-            return await ctx.reply(quote(`✅ Berhasil mentransfer ${coinAmount} koin ke pengguna!`));
+            return await ctx.reply(quote(`✅ Berhasil mentransfer ${coinAmount} Credz ke pengguna!`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

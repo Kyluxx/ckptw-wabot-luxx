@@ -20,7 +20,7 @@ module.exports = {
             const result = tools.general.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {
-                coin: 5,
+                credz: 5,
                 timeout: 60000,
                 answer: result.name.toLowerCase()
             };
@@ -32,7 +32,7 @@ module.exports = {
                     url: result.img
                 },
                 mimetype: mime.lookup("png"),
-                caption: `${quote(`Bonus: ${game.coin} Koin`)}\n` +
+                caption: `${quote(`Bonus: ${game.credz} Credz`)}\n` +
                     `${quote(`Batas waktu: ${tools.general.convertMsToDuration(game.timeout)}`)}\n` +
                     `${quote(`Ketik ${monospace("hint")} untuk bantuan.`)}\n` +
                     `${quote(`Ketik ${monospace("surrender")} untuk menyerah.`)}\n` +
@@ -50,12 +50,12 @@ module.exports = {
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
-                    await db.add(`user.${participantId}.coin`, game.coin);
+                    await db.add(`user.${participantId}.credz`, game.credz);
                     await db.add(`user.${participantId}.winGame`, 1);
                     await ctx.sendMessage(
                         ctx.id, {
                             text: `${quote("💯 Benar!")}\n` +
-                                quote(`+${game.coin} Koin`)
+                                quote(`+${game.credz} Credz`)
                         }, {
                             quoted: m
                         }

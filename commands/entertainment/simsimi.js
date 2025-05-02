@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["simi"],
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

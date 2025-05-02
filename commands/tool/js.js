@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["javascript"],
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const script = ctx.args.join(" ") || null;

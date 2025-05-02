@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["image2text", "imagetotext", "img2text", "imgtotext"],
     category: "tool",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const msgType = ctx.getMessageType();

@@ -21,7 +21,7 @@ module.exports = {
             const result = tools.general.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {
-                coin: {
+                credz: {
                     answered: 5,
                     allAnswered: 50
                 },
@@ -53,7 +53,7 @@ module.exports = {
                     game.answers.delete(participantAnswer);
                     game.participants.add(participantId);
 
-                    await db.add(`user.${participantId}.coin`, game.coin.answered);
+                    await db.add(`user.${participantId}.credz`, game.credz.answered);
                     await ctx.sendMessage(ctx.id, {
                         text: quote(`✅ ${tools.general.ucword(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`)
                     }, {
@@ -63,11 +63,11 @@ module.exports = {
                     if (game.answers.size === 0) {
                         session.delete(ctx.id);
                         for (const participant of game.participants) {
-                            await db.add(`user.${participant}.coin`, game.coin.allAnswered);
+                            await db.add(`user.${participant}.credz`, game.credz.allAnswered);
                             await db.add(`user.${participant}.winGame`, 1);
                         }
                         await ctx.sendMessage(ctx.id, {
-                            text: quote(`🎉 Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.coin.allAnswered} koin.`)
+                            text: quote(`🎉 Selamat! Semua jawaban telah terjawab! Setiap anggota yang menjawab mendapat ${game.credz.allAnswered} Credz.`)
                         }, {
                             quoted: m
                         });

@@ -5,7 +5,7 @@ module.exports = {
     name: "waifu",
     category: "entertainment",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const apiUrl = tools.api.createUrl("https://api.waifu.pics", "/sfw/waifu");

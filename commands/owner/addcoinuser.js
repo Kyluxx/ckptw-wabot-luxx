@@ -26,12 +26,12 @@ module.exports = {
         if (!isOnWhatsApp.exists) return await ctx.reply(quote("❎ Akun tidak ada di WhatsApp!"));
 
         try {
-            await db.add(`user.${tools.general.getID(userJid)}.coin`, coinAmount);
+            await db.add(`user.${tools.general.getID(userJid)}.credz`, coinAmount);
 
             await ctx.sendMessage(userJid, {
-                text: quote(`🎉 Anda telah menerima ${coinAmount} koin dari Owner!`)
+                text: quote(`🎉 Anda telah menerima ${coinAmount} Credz dari Owner!`)
             });
-            return await ctx.reply(quote(`✅ Berhasil menambahkan ${coinAmount} koin kepada pengguna!`));
+            return await ctx.reply(quote(`✅ Berhasil menambahkan ${coinAmount} Credz kepada pengguna!`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

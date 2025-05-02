@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["howgay", "howpintar", "howcantik", "howganteng", "howgabut", "howgila", "howlesbi", "howstress", "howbucin", "howjones", "howsadboy"],
     category: "entertainment",
     permissions: {
-        coin: 5
+        credz: 5
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || null;

@@ -62,7 +62,7 @@ module.exports = {
 
                     categoryCommands.forEach(cmd => {
                         let permissionsText = "";
-                        if (cmd.permissions.coin) permissionsText += "ⓒ";
+                        if (cmd.permissions.credz) permissionsText += "ⓒ";
                         if (cmd.permissions.group) permissionsText += "Ⓖ";
                         if (cmd.permissions.owner) permissionsText += "Ⓞ";
                         if (cmd.permissions.premium) permissionsText += "Ⓟ";

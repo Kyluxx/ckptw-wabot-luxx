@@ -9,7 +9,7 @@ module.exports = {
     aliases: ["spotidl"],
     category: "downloader",
     permissions: {
-        coin: 10
+        credz: 10
     },
     code: async (ctx) => {
         const url = ctx.args[0] || null;

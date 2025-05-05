@@ -10,7 +10,7 @@ const {
 global.config = {
     // Informasi bot dasar
     bot: {
-        name: "Livi BOT", // Nama bot
+        name: "Livi Lovely", // Nama bot
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
         phoneNumber: "6281325174404", // Nomor telepon bot (opsional jika menggunakan QR code)
         thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/hu-tao.gif", // Gambar thumbnail bot
@@ -85,13 +85,13 @@ global.config = {
 
     // Sistem bot
     system: {
-        alwaysOnline: true, // Bot selalu berstatus "online"
+        alwaysOnline: false, // Bot selalu berstatus "online"
         antiCall: false, // Bot secara otomatis membanned orang yang menelepon
         autoMention: true, // Bot otomatis mention seseorang dalam pesan yang dikirim
-        autoRead: true, // Bot baca pesan otomatis
+        autoRead: false, // Bot baca pesan otomatis
         autoTypingOnCmd: true, // Tampilkan status "sedang mengetik" saat memproses perintah
-        cooldown: 10 * 1000, // Jeda antar perintah (ms)
-        maxListeners: 30, // Max listeners untuk events
+        cooldown: 5 * 1000, // Jeda antar perintah (ms)
+        maxListeners: 300, // Max listeners untuk events
         port: 3000, // Port (jika pakai server)
         reportErrorToOwner: true, // Laporkan kesalahan ke owner bot
         restrict: false, // Batasi akses perintah

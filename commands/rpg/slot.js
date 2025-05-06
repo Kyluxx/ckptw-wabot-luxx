@@ -6,7 +6,7 @@ const { quote, monospace } = require("@mengkodingan/ckptw");
 module.exports = {
     name: "slot",
     aliases: [],
-    category: "game",
+    category: "rpg",
     permissions: {},
     code: async (ctx) => {
       try {

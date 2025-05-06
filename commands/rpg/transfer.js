@@ -5,7 +5,7 @@ const {
 module.exports = {
     name: "transfer",
     aliases: ["tf"],
-    category: "profile",
+    category: "rpg",
     permissions: {},
     code: async (ctx) => {
         const mentionedJid = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];

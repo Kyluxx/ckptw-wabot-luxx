@@ -3,7 +3,7 @@ const { monospace, quote } = require("@mengkodingan/ckptw");
 module.exports = {
   name: "upgradepickaxe",
   aliases: ["upickaxe", "upick"],
-  category: "game",
+  category: "rpg",
   code: async (ctx) => {
     const userId = tools.general.getID(ctx.sender.jid);
     const input = ctx.args[0]?.toLowerCase() || null;

@@ -26,7 +26,7 @@ function getFishRarity(rod) {
 
 module.exports = {
   name: "fish",
-  category: "game",
+  category: "rpg",
   code: async (ctx) => { 
     const userId = tools.general.getID(ctx.sender.jid);
     const now = Date.now();

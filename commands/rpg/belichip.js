@@ -6,7 +6,7 @@ module.exports =
   {
     name: "belichip",
     aliases: ["buychip"],
-    category: "game",
+    category: "rpg",
     permissions: {},
     code: async (ctx) => {
       try {

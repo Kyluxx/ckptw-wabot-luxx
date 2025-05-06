@@ -4,7 +4,7 @@ const { monospace, quote } = require("@mengkodingan/ckptw");
 module.exports = {
   name: "minta",
   aliases: ["beg", "minta"],
-  category: "game",
+  category: "rpg",
   code: async (ctx) => {
     const userJid = ctx.sender.jid;
     const userId = tools.general.getID(userJid);

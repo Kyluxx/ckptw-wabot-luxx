@@ -4,7 +4,7 @@ const COOLDOWN = 5 * 60 * 1000; // 5 menit
 
 module.exports = {
   name: "mine",
-  category: "game",
+  category: "rpg",
   code: async (ctx) => {
     const userId = tools.general.getID(ctx.sender.jid);
     const now = Date.now();

@@ -3,7 +3,7 @@ const { monospace, quote } = require("@mengkodingan/ckptw");
 module.exports = {
   name: "maling",
   aliases: ["rob"],
-  category: "game",
+  category: "rpg",
   permissions: { group: true },
 
   code: async (ctx) => {
@@ -37,8 +37,8 @@ module.exports = {
       }
 
       // Owners & Premium bypass
-      if(targetDb?.premium || targetDb.isOwner){
-        return await ctx.reply(quote("Mau maling apa ya? Pergi jauh jauh"))
+      if(tools.general.isOwner(robTargetId, ctx.msg.key.id) || userDb?.premium){
+        return await ctx.reply(quote("Mau maling apa ya? Pergi jauh jauh, ck"))
       }
 
       // Prevent robbing when target has no credz
@@ -55,7 +55,7 @@ module.exports = {
       
       // Crime history & fine calculation
       const historyCount = (await db.get(`user.${senderId}.crimehistory`)) || 0;
-      const fine = robCredz + historyCount;
+      const fine = fineRob + historyCount;
 
       // Success chance
       const SUCCESS_RATE = 0.4;

@@ -48,7 +48,7 @@ const items = [
 module.exports = {
   name: "shop",
   aliases: ["beli", "buy", "upgrade"],
-  category: "game",
+  category: "rpg",
   code: async (ctx) => {
     try {
       const senderId = tools.general.getID(ctx.sender.jid);

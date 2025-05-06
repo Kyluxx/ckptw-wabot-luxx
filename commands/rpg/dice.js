@@ -7,7 +7,7 @@ module.exports =
   {
     name: "dadu",
     aliases: ["dice"],
-    category: "game",
+    category: "rpg",
     permissions: {},
     code: async (ctx) => {
       try {

@@ -9,7 +9,7 @@ const possibleJobs = ["Kamu membantu mengajar di sekolah dasar.", "Kamu membersi
 module.exports = {
   name: "work",
   aliases: ["kerja"],
-  category: "game",
+  category: "rpg",
   code: async (ctx) => {
     const userId = tools.general.getID(ctx.sender.jid);
     const now = Date.now();

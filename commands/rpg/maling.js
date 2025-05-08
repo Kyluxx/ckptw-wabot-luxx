@@ -1,6 +1,5 @@
 const { monospace, quote } = require("@mengkodingan/ckptw");
 
-
 // Message templates
 const MESSAGES = {
   prompts: {
@@ -9,6 +8,7 @@ const MESSAGES = {
     onCooldown: (time) => `❎ Anda masih memiliki cooldown. Silakan tunggu ${time} lagi.`,
     banned: "Mau maling apa ya? Pergi jauh jauh, ck",
     noCredz: "Target tidak memiliki Credz untuk dimaling",
+    lockpad: "🔒 Wah! Lockpad aktif, upaya maling dibatalkan dan kamu ketahuan!",
   },
   results: {
     success: [
@@ -78,10 +78,15 @@ module.exports = {
         return ctx.reply(quote(MESSAGES.prompts.noCredz));
       }
 
+      // Lockpad check (8 hours)
+      if (targetDb.lockpad_time && now - targetDb.lockpad_time < 8 * 60 * 60 * 1000) {
+        return ctx.reply(quote(MESSAGES.prompts.lockpad));
+      }
+
       // Determine outcome
       const amount = Math.floor(Math.random() * maxRob) + 1;
       const rawRate = userDb.stealer ? 0.6 : 0.4;
-      const successRate = targetDb.lockpad_time ? 0 : rawRate;
+      const successRate = rawRate;
       const success = Math.random() < successRate;
       userDb.stealer = false;
 

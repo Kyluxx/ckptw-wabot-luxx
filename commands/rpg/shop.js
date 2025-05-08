@@ -4,11 +4,10 @@ const { monospace, quote } = require("@mengkodingan/ckptw");
 const items = [
   {
     id: 1,
-    name: "[BL] Bank Limit 🏦",
+    name: "💰 [BL] Bank Limit",
     aliases: ["bl"],
     price: 200,
     description: "Menambahkan limit bank sebanyak +100",
-    // Custom effect when purchasing this item
     effect: async ({ senderId, userPath, userData, quantity, db, ctx, item }) => {
       const inc = 100 * quantity;
       const oldLimit = userData.bankLimit ?? 100;
@@ -16,7 +15,7 @@ const items = [
       await db.set(`${userPath}.bankLimit`, newLimit);
       return ctx.reply(
         quote(
-          `✅ Berhasil membeli ${quantity}x ${item.name}! \n` +
+          ` Berhasil membeli ${quantity}x ${item.name}! \n` +
           `Limit bank: ${oldLimit} → ${newLimit}`
         )
       );
@@ -24,21 +23,79 @@ const items = [
   },
   {
     id: 2,
-    name: "[LP] Laptop 💻",
+    name: "💻 [LP] Laptop",
     aliases: ["lp", "laptop"],
     price: 500,
     description: "Mendapatkan Laptop untuk streaming",
-    // Custom effect when purchasing this item
     effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
       if(`${userPath}.laptop` === true) {
-        return ctx.reply(quote(`❌ Kamu sudah punya Laptop!`));
+        return ctx.reply(quote(` Kamu sudah punya Laptop!`));
       }
       if (quantity > 1) {
-        return ctx.reply(quote(`❌ Maksimal pembelian ${item.name} adalah 1`));
+        return ctx.reply(quote(` Maksimal pembelian ${item.name} adalah 1`));
       }
       await db.set(`${userPath}.laptop`, true);
       return ctx.reply(
-        quote(`✅ Berhasil membeli 1x ${item.name}!`)
+        quote(` Berhasil membeli 1x ${item.name}!`)
+      );
+    }
+  },
+  {
+    id: 3,
+    name: "🔓 [SD] Stealer Device",
+    aliases: ["sd"],
+    price: 500,
+    description: "Kemungkinan berhasil maling meningkat 20%, hanya 1x penggunaan",
+    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
+      if(`${userPath}.stealer` === true) {
+        return ctx.reply(quote(` Kamu sudah punya Stealer Device!`));
+      }
+      if (quantity > 1) {
+        return ctx.reply(quote(` Maksimal pembelian ${item.name} adalah 1`));
+      }
+      await db.set(`${userPath}.stealer`, true);
+      return ctx.reply(
+        quote(` Berhasil membeli 1x ${item.name}!`)
+      );
+    }
+  },
+  {
+    id: 4,
+    name: "🔐 [LPD] LockPad Device",
+    aliases: ["lpd"],
+    price: 5000,
+    description: "Melindungi akun kamu dari perampokan, berlaku 8 jam",
+    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
+      if (quantity > 1) {
+        return ctx.reply(quote(` Maksimal pembelian ${item.name} adalah 1`));
+      }
+      const sender = await db.get(userPath);
+      if (sender.lockpad_time && Date.now() - sender.lockpad_time < 8 * 60 * 60 * 1000) {
+        return ctx.reply(quote(` Kamu masih memiliki LockPad Device yang aktif!`));
+      }
+      await db.add(`${userPath}.lockpad_time`, Date.now());
+      return ctx.reply(
+        quote(` Berhasil membeli 1x ${item.name}! \n` +
+          `LockPad Device akan aktif selama 8 jam kedepan`)
+      );
+    }
+  },
+  {
+    id: 5,
+    name: "🛡️ [IMM] Immortality",
+    aliases: ["imm"],
+    price: 1000,
+    description: "Kamu dapat hidup kembali jika mati, hanya 1x penggunaan",
+    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
+      if(`${userPath}.immortality` === true) {
+        return ctx.reply(quote(` Kamu sudah punya Immortality!`));
+      }
+      if (quantity > 1) {
+        return ctx.reply(quote(` Maksimal pembelian ${item.name} adalah 1`));
+      }
+      await db.set(`${userPath}.immortality`, true);
+      return ctx.reply(
+        quote(` Berhasil membeli 1x ${item.name}!`)
       );
     }
   },
@@ -65,7 +122,7 @@ module.exports = {
             `${i.id}. ${i.name} - ${monospace(i.price.toString())} Credz\n   ${i.description}`
           )
           .join("\n\n");
-        return ctx.reply(quote(`🛒 Shop Items:\n\n${shopList}`));
+        return ctx.reply(quote(` Shop Items:\n\n${shopList}`));
       }
 
       // Determine item identifier and quantity
@@ -79,7 +136,7 @@ module.exports = {
         i.aliases.includes(identifier)
       );
       if (!item) {
-        return ctx.reply(quote("❎ Item tidak ditemukan."));
+        return ctx.reply(quote(" Item tidak ditemukan."));
       }
 
       // Check sufficient funds (owner/premium bypass)
@@ -87,7 +144,7 @@ module.exports = {
       const isOwner = tools.general.isOwner(senderId, ctx.msg.key.id);
       const isPremium = userData.premium === true;
       if (wallet < totalCost && !isOwner && !isPremium) {
-        return ctx.reply(quote("❎ Credz tidak mencukupi untuk membeli item ini."));
+        return ctx.reply(quote(" Credz tidak mencukupi untuk membeli item ini."));
       }
 
       // Deduct cost
@@ -109,7 +166,7 @@ module.exports = {
       await db.set(invPath, inventory);
 
       return ctx.reply(
-        quote(`✅ Berhasil membeli ${quantity}x ${item.name}!`)
+        quote(` Berhasil membeli ${quantity}x ${item.name}!`)
       );
 
     } catch (error) {
@@ -117,3 +174,5 @@ module.exports = {
     }
   },
 };
+
+

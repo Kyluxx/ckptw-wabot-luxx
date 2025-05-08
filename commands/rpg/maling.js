@@ -1,5 +1,39 @@
 const { monospace, quote } = require("@mengkodingan/ckptw");
 
+
+// Message templates
+const MESSAGES = {
+  prompts: {
+    noTarget: "Silakan mention atau input ID target yang ingin dirob",
+    notFound: "❎ User tidak ditemukan",
+    onCooldown: (time) => `❎ Anda masih memiliki cooldown. Silakan tunggu ${time} lagi.`,
+    banned: "Mau maling apa ya? Pergi jauh jauh, ck",
+    noCredz: "Target tidak memiliki Credz untuk dimaling",
+  },
+  results: {
+    success: [
+      (amt, id) => `💸 Sukses! Kamu nyolong ${monospace(amt)} Credz dari ${monospace(id)} 🎉`,
+      (amt, id) => `🕵️‍♂️ Diam-diam ambil ${monospace(amt)} dari ${monospace(id)}. Mantap!`,
+      (amt, id) => `👏 Berhasil! ${monospace(amt)} Credz sekarang milikmu, curang tapi cuan!`,
+    ],
+    fail: [
+      () => `🚨 Ups! Gagal nyolong, mending latihan lagi 😅`,
+      () => `❌ Coba lagi lain waktu, si target terlalu waspada!`,
+      () => `😵 Waduh! Rencana ketahuan, gak jadi deh`,
+    ],
+    die: [
+      () => `💀 Aduh! Kamu ketangkep dan kehilangan semua Credz!`,
+      () => `⚰️ Gawat, kamu mati dalam misinya dan nyesel deh!`,
+    ],
+    immortalRevive: "🏰 Kamu mati tapi dibangkitkan kembali oleh Immortality!",
+  },
+};
+
+// Utility to pick random element
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 module.exports = {
   name: "maling",
   aliases: ["rob"],
@@ -8,81 +42,80 @@ module.exports = {
 
   code: async (ctx) => {
     try {
-      // Extract target JID
-      const mention = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
-      const argId = ctx.args[0];
-      const quoted = ctx.quoted?.senderJid;
-      const targetJid = quoted || mention || (argId ? `${argId}@s.whatsapp.net` : null);
-
+      // Get target JID
+      const targetJid = getTargetJid(ctx);
       if (!targetJid) {
-        return await ctx.reply(quote(" Silakan mention atau input ID target yang ingin dirob"));
+        return ctx.reply(quote(MESSAGES.prompts.noTarget));
       }
 
-      // IDs
       const senderId = tools.general.getID(ctx.sender.jid);
-      const robTargetId = tools.general.getID(targetJid);
+      const targetId = tools.general.getID(targetJid);
 
-      // Fetch databases
       const userDb = (await db.get(`user.${senderId}`)) || {};
-      const targetDb = await db.get(`user.${robTargetId}`);
+      const targetDb = await db.get(`user.${targetId}`);
       if (!targetDb) {
-        return await ctx.reply(quote("❎ User tidak ditemukan"));
+        return ctx.reply(quote(MESSAGES.prompts.notFound));
       }
 
-      const userCd = (await db.get(`user.${senderId}.cd.maling`)) || 0;
-      if (userCd > Date.now()) {
-        return await ctx.reply(
-          quote(`❎ Anda masih memiliki cooldown. Silakan tunggu ${tools.general.convertMsToDuration(userCd - Date.now() + 600000)} lagi.`)
-        );
+      // Cooldown check
+      const now = Date.now();
+      const cdKey = `user.${senderId}.cd.maling`;
+      const nextAvailable = (await db.get(cdKey)) || 0;
+      if (nextAvailable > now) {
+        const waitTime = tools.general.convertMsToDuration(nextAvailable - now + 600000);
+        return ctx.reply(quote(MESSAGES.prompts.onCooldown(waitTime)));
+      }
+      await db.set(cdKey, now + 600000);
+
+      // Owner or premium bypass
+      if (tools.general.isOwner(targetId, ctx.msg.key.id) || userDb.premium) {
+        return ctx.reply(quote(MESSAGES.prompts.banned));
       }
 
-      // Owners & Premium bypass
-      if(tools.general.isOwner(robTargetId, ctx.msg.key.id) || userDb?.premium){
-        return await ctx.reply(quote("Mau maling apa ya? Pergi jauh jauh, ck"))
-      }
-
-      // Prevent robbing when target has no credz
-      const maxRob = Math.floor(targetDb.credz * 0.35);
+      // Check target credz
+      const maxRob = Math.floor((targetDb.credz || 0) * 0.35);
       if (maxRob < 1) {
-        return await ctx.reply(quote("Target tidak memiliki Credz untuk dimaling"));
+        return ctx.reply(quote(MESSAGES.prompts.noCredz));
       }
 
-      await db.set(`user.${senderId}.cd.maling`, Date.now() + 600000);
+      // Determine outcome
+      const amount = Math.floor(Math.random() * maxRob) + 1;
+      const rawRate = userDb.stealer ? 0.6 : 0.4;
+      const successRate = targetDb.lockpad_time ? 0 : rawRate;
+      const success = Math.random() < successRate;
+      userDb.stealer = false;
 
-      // Determine amount to rob
-      const robCredz = Math.floor(Math.random() * maxRob) + 1;
-      const fineRob = robCredz/2
-      
-      // Crime history & fine calculation
-      const historyCount = (await db.get(`user.${senderId}.crimehistory`)) || 0;
-      const fine = fineRob + historyCount;
-
-      // Success chance
-      const SUCCESS_RATE = 0.4;
-      const isSuccess = Math.random() < SUCCESS_RATE;
-
-      if (isSuccess) {
-        // Transfer credz on success
-        await db.subtract(`user.${robTargetId}.credz`, robCredz);
-        await db.add(`user.${senderId}.credz`, robCredz);
-        return await ctx.reply(
-          quote(`💸 Anda berhasil mengambil ${monospace(robCredz.toString())} Credz dari ${monospace(robTargetId)}`)
-        );
-      } else {
-        // On failure, deduct fine and increase crime history
-        await db.subtract(`user.${senderId}.credz`, fine);
-        await db.add(`user.${robTargetId}.credz`, fine);
-        await db.add(`user.${senderId}.crimehistory`, historyCount + 10);
-        await ctx.sendMessage(targetJid, {
-          text: quote(`🚨 Anda telah dimaling! Anda ${isSuccess ? 'Kehilangan' : 'Mendapatkan'}: ${monospace(fine.toString())} Credz.`),
-        })
-        return await ctx.reply(
-          quote(`🚨 Anda tertangkap basah! Denda: ${monospace(fine.toString())} Credz.`)
-        );
+      if (success) {
+        await db.subtract(`user.${targetId}.credz`, amount);
+        await db.add(`user.${senderId}.credz`, amount);
+        const message = pick(MESSAGES.results.success)(amount, targetId);
+        return ctx.reply(quote(message));
       }
-    } catch (error) {
-      // Handle unexpected errors
-      return await tools.cmd.handleError(ctx, error, false);
+
+      // Failure branch
+      const willDie = Math.random() < 0.2;
+      if (willDie) {
+        if (userDb.immortality) {
+          userDb.immortality = false;
+          return ctx.reply(quote(MESSAGES.results.immortalRevive));
+        }
+        await db.set(`user.${senderId}.credz`, 0);
+        const message = pick(MESSAGES.results.die)();
+        return ctx.reply(quote(message));
+      }
+
+      // Just fail
+      const failMsg = pick(MESSAGES.results.fail)();
+      return ctx.reply(quote(failMsg));
+    } catch (err) {
+      return tools.cmd.handleError(ctx, err, false);
     }
-  }
+  },
 };
+
+// Helper to extract target JID
+function getTargetJid(ctx) {
+  const mention = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
+  const arg = ctx.args[0] ? `${ctx.args[0]}@s.whatsapp.net` : null;
+  return ctx.quoted?.senderJid || mention || arg;
+}

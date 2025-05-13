@@ -14,7 +14,7 @@ global.config = {
         prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i, // Karakter awalan perintah yang diizinkan
         phoneNumber: "6287883818502", // Nomor telepon bot (opsional jika menggunakan QR code)
         thumbnail: "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/hu-tao.gif", // Gambar thumbnail bot
-        groupJid: "120363417850831926@g.us", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
+        groupJid: "", //"120363417850831926@g.us", // JID untuk group bot (opsional jika tidak menggunakan requireBotGroupMembership)
 
         // Konfigurasi autentikasi sesi bot
         authAdapter: {

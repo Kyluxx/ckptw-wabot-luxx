@@ -5,7 +5,7 @@ const {
 module.exports = {
     name: "topcredz",
     aliases: ["tc"],
-    category: "rpg",
+    category: "game",
     permissions: {},
     code: async (ctx) => {
         try {

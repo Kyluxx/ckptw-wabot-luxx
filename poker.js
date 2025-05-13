@@ -37,7 +37,7 @@ function evaluateHands(players, community) {
 module.exports = {
   name: "poker",
   aliases: [],
-  category: "rpg",
+  category: "game",
   permissions: { group: true },
 
   code: async (ctx) => {

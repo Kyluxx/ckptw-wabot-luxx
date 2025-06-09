@@ -1,7 +1,6 @@
 const {
-    bold,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -15,8 +14,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "evangelion"))
         );
 
         try {
@@ -25,13 +24,13 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.data;
 
-            const resultText = result.map((r) => {
+            const resultText = result.map(r => {
                 switch (r.type) {
                     case "video":
                         return `${quote(`Judul: ${r.title}`)}\n` +
                             `${quote(`Durasi: ${r.timestamp}`)}\n` +
                             `${quote(`Diunggah: ${r.ago}`)}\n` +
-                            `${quote(`Dilihat: ${r.views}`)}\n` +
+                            `${quote(`Ditonton: ${r.views}`)}\n` +
                             `${quote(`URL: ${r.url}`)}`;
                     case "channel":
                         return `${quote(`Saluran: ${r.title}`)}\n` +
@@ -39,7 +38,7 @@ module.exports = {
                             `${quote(`Jumlah video: ${r.videoCount}`)}\n` +
                             `${quote(`URL: ${r.url}`)}`;
                 }
-            }).filter((r) => r).join(
+            }).filter(r => r).join(
                 "\n" +
                 `${quote("─────")}\n`
             );

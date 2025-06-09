@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -10,36 +10,38 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], [ "image","text"]))}\n` +
-            `${quote(tools.cmd.generateCommandExample(ctx.used, "apa itu bot whatsapp?"))}\n` +
-            quote(tools.cmd.generateNotes(["AI ini dapat melihat media dan menjawab pertanyaan tentangnya. Kirim media dan tanyakan apa saja!"]))
+            `${quote(tools.msg.generateInstruction(["send"], [ "image","text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "apa itu bot whatsapp?"))}\n` +
+            quote(tools.msg.generateNotes(["AI ini dapat melihat gambar dan menjawab pertanyaan tentang gambar tersebut.", "AI ini dapat melihat dokumen PDF dan menjawab pertanyaan tentang dokumen PDF tersebut.", "Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, "image"),
-            tools.cmd.checkQuotedMedia(ctx.quoted, "image")
+            tools.cmd.checkMedia(messageType, "image", "document"),
+            tools.cmd.checkQuotedMedia(ctx.quoted, "image", "document")
         ]);
 
         try {
-            if (checkMedia || checkQuotedMedia) {
+            const check = checkMedia || checkQuotedMedia;
+            if (check) {
+                const isDocument = check === "document";
                 const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-                const uploadUrl = await tools.general.upload(buffer, "image");
-                const apiUrl = tools.api.createUrl("otinxsandip", "/gemini2", {
-                    prompt: input,
-                    url: uploadUrl
+                const uploadUrl = await tools.cmd.upload(buffer, isDocument ? "document" : "image");
+                const apiUrl = tools.api.createUrl("bk9", `/ai/${isDocument ? "geminidocs" : "geminiimg"}`, {
+                    url: uploadUrl,
+                    q: input
                 });
-                const result = (await axios.get(apiUrl)).data.answer;
+                const result = (await axios.get(apiUrl)).data.BK9;
 
                 return await ctx.reply(result);
             } else {
-                const apiUrl = tools.api.createUrl("otinxsandip", "/gemini", {
-                    prompt: input
+                const apiUrl = tools.api.createUrl("bk9", "/ai/gemini", {
+                    q: input
                 });
-                const result = (await axios.get(apiUrl)).data.answer;
+                const result = (await axios.get(apiUrl)).data.BK9;
 
                 return await ctx.reply(result);
             }

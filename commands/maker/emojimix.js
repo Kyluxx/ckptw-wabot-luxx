@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const {
     Sticker,
     StickerTypes
@@ -14,22 +14,21 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const emojisString = ctx.args.join("");
-        const emojiRegex = /\p{Emoji}/gu;
-        const emojis = Array.from(emojisString.matchAll(emojiRegex), (match) => match[0]);
+        const input = ctx.args.join("");
+        const emojis = Array.from(input.matchAll(/\p{Emoji}/gu), (match) => match[0]);
         const [emoji1, emoji2] = emojis.slice(0, 2);
 
         if (!emoji1 || !emoji2) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "😱 🤓"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "😱 🤓"))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("fast", "/maker/emojimix", {
+            const result = tools.api.createUrl("falcon", "/tools/emojimix", {
                 emoji1,
                 emoji2
             });
-            const result = new Sticker(apiUrl, {
+            const sticker = new Sticker(result, {
                 pack: config.sticker.packname,
                 author: config.sticker.author,
                 type: StickerTypes.FULL,
@@ -38,7 +37,7 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await result.toMessage());
+            return await ctx.reply(await sticker.toMessage());
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

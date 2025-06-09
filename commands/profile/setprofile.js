@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "setprofile",
@@ -12,18 +12,18 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(`${tools.cmd.generateInstruction(["send"], ["text"])}`)}\n` +
-            `${quote(tools.cmd.generateCommandExample(ctx.used, "autolevelup"))}\n` +
-            quote(tools.cmd.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
+            `${quote(`${tools.msg.generateInstruction(["send"], ["text"])}`)}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "autolevelup"))}\n` +
+            quote(tools.msg.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
         );
 
-        if (input === "list") {
+        if (["l", "list"].includes(input.toLowerCase())) {
             const listText = await tools.list.get("setprofile");
             return await ctx.reply(listText);
         }
 
         try {
-            const senderId = tools.general.getID(ctx.sender.jid);
+            const senderId = tools.cmd.getID(ctx.sender.jid);
             const args = ctx.args;
             const command = args[0]?.toLowerCase();
 
@@ -41,6 +41,7 @@ module.exports = {
                     const username = `@${input}`
                     await db.set(`user.${senderId}.username`, username);
                     return await ctx.reply(quote(`✅ Username berhasil diubah menjadi '${username}'!`));
+                    break;
                 }
                 case "autolevelup": {
                     const setKey = `user.${senderId}.autolevelup`;
@@ -50,6 +51,7 @@ module.exports = {
 
                     const statusText = newStatus ? "diaktifkan" : "dinonaktifkan";
                     return await ctx.reply(quote(`✅ Fitur '${command}' berhasil ${statusText}!`));
+                    break;
                 }
                 default:
                     return await ctx.reply(quote("❎ Teks tidak valid."));

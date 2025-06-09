@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "intro",
@@ -11,7 +11,7 @@ module.exports = {
     },
     code: async (ctx) => {
         try {
-            const groupId = ctx.isGroup() ? tools.general.getID(ctx.id) : null;
+            const groupId = tools.cmd.getID(ctx.id);
             const introText = await db.get(`group.${groupId}.text.intro`) || quote("❎ Grup ini tidak memiliki intro.");
 
             return await ctx.reply(introText);

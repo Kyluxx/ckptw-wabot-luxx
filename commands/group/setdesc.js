@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "setdesc",
@@ -14,8 +14,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "by itsreimau"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "by itsreimau"))
         );
 
         try {

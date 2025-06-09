@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -12,8 +12,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "bogor"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "bogor"))
         );
 
         try {

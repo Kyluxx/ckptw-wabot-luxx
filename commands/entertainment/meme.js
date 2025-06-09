@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -12,7 +12,7 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const apiUrl = tools.api.createUrl("https://candaan-api.vercel.app", "/api/image/random", {});
+        const apiUrl = tools.api.createUrl("https://candaan-api.vercel.app", "/api/image/random");
 
         try {
             const result = (await axios.get(apiUrl)).data.data;
@@ -21,7 +21,7 @@ module.exports = {
                 image: {
                     url: result.url
                 },
-                mimetype: mime.lookup("png"),
+                mimetype: mime.lookup("jpeg"),
                 caption: `${quote(`Sumber: ${result.source}`)}\n` +
                     "\n" +
                     config.msg.footer

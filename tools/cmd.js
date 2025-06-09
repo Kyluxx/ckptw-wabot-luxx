@@ -1,9 +1,20 @@
 // Impor modul dan dependensi yang diperlukan
+const api = require("./api.js");
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
+const uploader = require("@zanixongroup/uploader");
+const axios = require("axios");
+const didYouMean = require("didyoumean");
 const util = require("node:util");
+
+const formatBotName = (botName) => {
+    if (!botName) return null;
+
+    botName = botName.toLowerCase();
+    return botName.replace(/[aiueo0-9\W_]/g, "");
+};
 
 async function checkMedia(type, required) {
     if (!type || !required) return false;
@@ -12,6 +23,7 @@ async function checkMedia(type, required) {
         audio: "audioMessage",
         document: ["documentMessage", "documentWithCaptionMessage"],
         gif: "videoMessage",
+        groupStatusMention: "groupStatusMentionMessage",
         image: "imageMessage",
         sticker: "stickerMessage",
         video: "videoMessage"
@@ -19,10 +31,18 @@ async function checkMedia(type, required) {
 
     const mediaList = Array.isArray(required) ? required : [required];
 
-    return mediaList.some(media => {
-        if (media === "document") return mediaMap[media].includes(type);
-        return type === mediaMap[media];
-    });
+    for (const media of mediaList) {
+        const mappedType = mediaMap[media];
+        if (!mappedType) continue;
+
+        if (Array.isArray(mappedType)) {
+            if (mappedType.includes(type)) return media;
+        } else {
+            if (type === mappedType) return media;
+        }
+    }
+
+    return false;
 }
 
 async function checkQuotedMedia(type, required) {
@@ -40,102 +60,136 @@ async function checkQuotedMedia(type, required) {
 
     const mediaList = Array.isArray(required) ? required : [required];
 
-    return mediaList.some(media => {
+    for (const media of mediaList) {
         if (media === "text") {
             const mediaContent = typeMediaMap.text;
-            return mediaContent && mediaContent.length > 0;
+            if (mediaContent && mediaContent.length > 0) return media;
         } else if (media === "viewOnce") {
             const viewOnceMediaKeys = ["audioMessage", "imageMessage", "videoMessage"];
-            return viewOnceMediaKeys.some(key => type[key]?.viewOnce === true);
+            if (viewOnceMediaKeys.some(key => type[key]?.viewOnce === true)) return media;
         } else {
-            return !!typeMediaMap[media];
+            if (typeMediaMap[media]) return media;
         }
-    });
-}
-
-function generateInstruction(actions, mediaTypes) {
-    if (!actions || !actions.length) return "'actions' yang diperlukan harus ditentukan!";
-
-    let translatedMediaTypes;
-    if (typeof mediaTypes === "string") {
-        translatedMediaTypes = [mediaTypes];
-    } else if (Array.isArray(mediaTypes)) {
-        translatedMediaTypes = mediaTypes;
-    } else {
-        return "'mediaTypes' harus berupa string atau array string!";
     }
 
-    const mediaTypeTranslations = {
-        "audio": "audio",
-        "document": "dokumen",
-        "gif": "GIF",
-        "image": "gambar",
-        "sticker": "stiker",
-        "text": "teks",
-        "video": "video",
-        "viewOnce": "sekali lihat"
+    return false;
+}
+
+function fakeMetaAiQuotedText(text) {
+    if (!text) return null;
+
+    const quoted = {
+        key: {
+            participant: "13135550002@s.whatsapp.net",
+            remoteJid: "status@broadcast"
+        },
+        message: {
+            extendedTextMessage: {
+                text
+            }
+        }
     };
+    return quoted;
+}
 
-    const translatedMediaTypeList = translatedMediaTypes.map(type => mediaTypeTranslations[type]);
+function generateUID(id, withBotName) {
+    if (!id) return null;
 
-    let mediaTypesList;
-    if (translatedMediaTypeList.length > 1) {
-        const lastMediaType = translatedMediaTypeList[translatedMediaTypeList.length - 1];
-        mediaTypesList = translatedMediaTypeList.slice(0, -1).join(", ") + `, atau ${lastMediaType}`;
-    } else {
-        mediaTypesList = translatedMediaTypeList[0];
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+        const charCode = id.charCodeAt(i);
+        hash = (hash * 31 + charCode) % 1000000007;
     }
 
-    const actionTranslations = {
-        "send": "Kirim",
-        "reply": "Balas"
-    };
+    const uniquePart = id.split("").reverse().join("").charCodeAt(0).toString(16);
+    let uid = `${Math.abs(hash).toString(16).toLowerCase()}-${uniquePart}`;
+    if (withBotName) uid += `_${formatBotName(config.bot.name)}-wabot`;
 
-    const instructions = actions.map(action => `${actionTranslations[action]}`);
-    const actionList = instructions.join(actions.length > 1 ? " atau " : "");
-
-    return `📌 ${actionList} ${mediaTypesList}!`;
+    return uid;
 }
 
-function generateCommandExample(used, args) {
-    if (!used) return "'used' harus diberikan!";
+function getID(jid) {
+    if (!jid) return null;
 
-    if (!args) return "'args' harus diberikan!";
-
-    const commandMessage = `Contoh: ${monospace(`${used.prefix + used.command} ${args}`)}`;
-    return commandMessage;
+    return jid.split("@")[0].split(":")[0];
 }
 
-function generatesFlagInformation(flags) {
-    if (typeof flags !== "object" || !flags) return "'flags' harus berupa objek!";
+function getRandomElement(arr) {
+    if (!arr || !arr.length) return null;
 
-    const flagInfo = "Flag:\n" +
-        Object.entries(flags).map(([flag, description]) =>
-            quote(`• ${monospace(flag)}: ${description}`)
-        ).join("\n");
-
-    return flagInfo;
-}
-
-function generateNotes(notes) {
-    if (!Array.isArray(notes)) return "'notes' harus berupa string!";
-
-    const notesInfo = "Catatan:\n" +
-        notes.map(note => quote(`• ${note}`)).join("\n");
-
-    return notesInfo;
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
 }
 
 async function handleError(ctx, error, useAxios) {
+    const isGroup = ctx.isGroup();
+    const groupJid = isGroup ? ctx.id : null;
+    const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
     const errorText = util.format(error);
+
     consolefy.error(`Error: ${errorText}`);
     if (config.system.reportErrorToOwner) await ctx.replyWithJid(`${config.owner.id}@s.whatsapp.net`, {
-        text: `${quote("⚠️ Terjadi kesalahan:")}\n` +
+        text: `${quote(isGroup ? `⚠️ Terjadi kesalahan dari grup: @${groupJid}, oleh: @${tools.cmd.getID(ctx.sender.jid)}` : `⚠️ Terjadi kesalahan dari: @${tools.cmd.getID(ctx.sender.jid)}`)}\n` +
             `${quote("─────")}\n` +
-            monospace(errorText)
+            monospace(errorText),
+        contextInfo: {
+            mentionedJid: [ctx.sender.jid],
+            groupMentions: isGroup ? [{
+                groupJid,
+                groupSubject
+            }] : []
+        }
     });
     if (useAxios && error.status !== 200) return await ctx.reply(config.msg.notFound);
     return await ctx.reply(quote(`⚠️ Terjadi kesalahan: ${error.message}`));
+}
+
+function isCmd(content, bot) {
+    if (!content || !bot) return null;
+
+    const prefix = content.charAt(0);
+    if (!new RegExp(bot.prefix, "i").test(content)) return false;
+
+    const [cmdName, ...inputArray] = content.slice(1).trim().toLowerCase().split(/\s+/);
+    const input = inputArray.join(" ");
+
+    const commands = Array.from(bot.cmd.values());
+    const matchedCmd = commands.find(c => c.name === cmdName || c.aliases?.includes(cmdName));
+
+    if (matchedCmd) return {
+        msg: content,
+        prefix,
+        name: cmdName,
+        input
+    };
+
+    const mean = didYouMean(cmdName, commands.flatMap(c => [c.name, ...(c.aliases || [])]));
+
+    return mean ? {
+        msg: content,
+        prefix,
+        cmd: cmdName,
+        input,
+        didyoumean: mean
+    } : false;
+}
+
+function isOwner(id, messageId) {
+    if (!id) return false;
+
+    if (config.system.selfOwner) {
+        if (messageId?.startsWith("3EB0")) return false; // Anti rce (aka backdoor) ygy
+        return config.bot.id === id || config.owner.id === id || config.owner.co.includes(id);
+    }
+
+    return config.owner.id === id || config.owner.co.includes(id);
+}
+
+function isUrl(url) {
+    if (!url) return false;
+
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return urlRegex.test(url);
 }
 
 function parseFlag(argsString, customRules = {}) {
@@ -175,13 +229,64 @@ function parseFlag(argsString, customRules = {}) {
     return options;
 }
 
+async function translate(text, to) {
+    if (!text || !to) return null;
+
+    try {
+        const apiUrl = api.createUrl("nyxs", "/tools/translate", {
+            text,
+            to
+        });
+        const result = (await axios.get(apiUrl)).data.result;
+        return result;
+    } catch (error) {
+        consolefy.error(`Error: ${error}`);
+        return null;
+    }
+}
+
+async function upload(buffer, type = "any", host = config.system.uploaderHost) {
+    if (!buffer) return null;
+
+    const hosts = {
+        any: ["FastUrl", "Nyxs", "Litterbox", "Cloudku", "Catbox", "Uguu"],
+        image: ["Quax", "Ryzen", "TmpErhabot", "Shojib", "IDNet", "Erhabot", "Pomf"],
+        video: ["Quax", "Ryzen", "TmpErhabot", "Videy", "Pomf"],
+        audio: ["Quax", "Ryzen", "TmpErhabot", "Pomf"],
+        document: ["IDNet"]
+    };
+
+    let availableHosts = [...hosts.any];
+    if (type !== "any" && hosts[type]) availableHosts = [...hosts[type]];
+
+    const realHost = availableHosts.find(h => h.toLowerCase() === host.toLowerCase());
+
+    let hostsToTry = realHost ? [realHost, ...availableHosts.filter(h => h !== realHost)] : availableHosts;
+
+    for (const currentHost of hostsToTry) {
+        try {
+            const url = await uploader[currentHost](buffer);
+            if (url) return url;
+        } catch (error) {
+            consolefy.error(`Error: ${error}`);
+        }
+    }
+
+    return null;
+}
+
 module.exports = {
     checkMedia,
     checkQuotedMedia,
-    generateInstruction,
-    generateCommandExample,
-    generatesFlagInformation,
-    generateNotes,
+    fakeMetaAiQuotedText,
+    generateUID,
+    getID,
+    getRandomElement,
     handleError,
-    parseFlag
+    isCmd,
+    isOwner,
+    isUrl,
+    parseFlag,
+    translate,
+    upload
 };

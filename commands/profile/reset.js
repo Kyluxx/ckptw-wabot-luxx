@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "reset",
@@ -19,10 +19,12 @@ module.exports = {
 
             collector.on("collect", async (m) => {
                 const message = m.content.trim().toLowerCase();
-                const senderId = tools.general.getID(ctx.sender.jid);
+                const senderId = tools.cmd.getID(ctx.sender.jid);
 
                 if (message === "y") {
+                    const isPremium = await db.get(`user.${senderId}.premium`);
                     await db.delete(`user.${senderId}`);
+                    if (isPremium) await db.set(`user.${senderId}.premium`, true);
                     await ctx.reply(quote("✅ Data Anda berhasil direset. Semua data telah dihapus!"));
                     collector.stop();
                 } else if (message === "n") {
@@ -30,8 +32,6 @@ module.exports = {
                     collector.stop();
                 }
             });
-
-            collector.on("end", async () => {});
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

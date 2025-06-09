@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -14,22 +14,19 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "evangelion"))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("fast", "/search/steam", {
-                query: input
+            const apiUrl = tools.api.createUrl("agatz", "/api/steams", {
+                message: input
             });
-            const result = (await axios.get(apiUrl)).data.result;
+            const result = (await axios.get(apiUrl)).data.data;
 
-            const resultText = result.map((r) =>
-                `${quote(`Nama: ${r.name}`)}\n` +
-                `${quote(`Harga: ${r.price}`)}\n` +
-                `${quote(`Skor: ${r.score}`)}\n` +
-                `${quote(`Platform: ${r.platform}`)}` +
-                `${quote(`URL: ${r.url}`)}`
+            const resultText = result.map(r =>
+                `${quote(`Nama: ${r.judul}`)}\n` +
+                `${quote(`URL: ${r.link}`)}`
             ).join(
                 "\n" +
                 `${quote("─────")}\n`

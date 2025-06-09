@@ -1,11 +1,10 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const mime = require("mime-types");
 
 module.exports = {
     name: "editimage",
-    aliases: ["editimg"],
     category: "ai-misc",
     permissions: {
         premium: true
@@ -14,32 +13,31 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "make it evangelion art style"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "make it evangelion art style"))
         );
 
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, "image"),
+            tools.cmd.checkMedia(messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted, "image")
         ]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.cmd.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.general.upload(buffer, "image");
-            const result = tools.api.createUrl("zell", "/ai/editimg", {
-                imageUrl: uploadUrl,
-                prompt: input
-
+            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const result = tools.api.createUrl("nirkyy", "/api/v1/editimage", {
+                prompt: input,
+                url: uploadUrl
             });
 
             return await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: mime.lookup("png")
+                mimetype: mime.lookup("jpg")
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

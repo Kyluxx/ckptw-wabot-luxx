@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "kapankah",
@@ -13,16 +13,17 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion itu peak?"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "evangelion itu peak?"))
         );
 
         try {
-            const randomNumber = Math.floor(Math.random() * 60 + 1);
-            const times = ["detik", "menit", "jam", "hari", "minggu", "bulan", "tahun", "dekade", "abad"];
-            const time = tools.general.getRandomElement(times);
+            const minMs = 1000;
+            const maxMs = 1000 * 60 * 60 * 24 * 365.25 * 10;
+            const randomMs = Math.floor(Math.random() * (maxMs - minMs) + minMs);
+            const duration = tools.msg.convertMsToDuration(randomMs);
 
-            return await ctx.reply(quote(`${randomNumber} ${time} lagi...`));
+            return await ctx.reply(quote(`${duration} lagi...`));
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

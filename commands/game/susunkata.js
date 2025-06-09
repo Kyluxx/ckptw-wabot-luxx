@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const didYouMean = require("didyoumean");
 
@@ -16,7 +16,7 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/refs/heads/master/games/susunkata.json");
-            const result = tools.general.getRandomElement((await axios.get(apiUrl)).data);
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {
                 credz: 5,
@@ -43,7 +43,7 @@ module.exports = {
 
             collector.on("collect", async (m) => {
                 const participantAnswer = m.content.toLowerCase();
-                const participantId = tools.general.getID(m.sender);
+                const participantId = tools.cmd.getID(m.sender);
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
@@ -58,7 +58,7 @@ module.exports = {
                         }
                     );
                     return collector.stop();
-                } else if (participantAnswer === "hint") {
+                } else if (["h", "hint"].includes(participantAnswer)) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await ctx.sendMessage(ctx.id, {
                         text: monospace(clue.toUpperCase())
@@ -69,7 +69,7 @@ module.exports = {
                     session.delete(ctx.id);
                     await ctx.sendMessage(ctx.id, {
                         text: `${quote("🏳️ Anda menyerah!")}\n` +
-                            quote(`Jawabannya adalah ${tools.general.ucword(game.answer)}.`)
+                            quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)
                     }, {
                         quoted: m
                     });
@@ -88,7 +88,7 @@ module.exports = {
                     session.delete(ctx.id);
                     return await ctx.reply(
                         `${quote("⏱ Waktu habis!")}\n` +
-                        quote(`Jawabannya adalah ${tools.general.ucword(game.answer)}.`)
+                        quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)
                     );
                 }
             });

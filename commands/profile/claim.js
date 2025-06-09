@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "claim",
@@ -11,39 +11,52 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            `${quote(tools.cmd.generateCommandExample(ctx.used, "daily"))}\n` +
-            quote(tools.cmd.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "daily"))}\n` +
+            quote(tools.msg.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
         );
 
-        if (input === "list") {
+        if (["l", "list"].includes(input.toLowerCase())) {
             const listText = await tools.list.get("claim");
             return await ctx.reply(listText);
         }
 
-        const senderId = tools.general.getID(ctx.sender.jid);
+        const claim = claimRewards[input];
+        const senderId = tools.cmd.getID(ctx.sender.jid);
         const userDb = await db.get(`user.${senderId}`) || {};
 
+<<<<<<< HEAD
         if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Anda sudah memiliki Credz tak terbatas, tidak perlu mengklaim lagi."));
+=======
+        if (tools.cmd.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Anda sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));
+>>>>>>> master
 
-        if (!claimRewards[input]) return await ctx.reply(quote("❎ Hadiah tidak valid!"));
+        if (!claim) return await ctx.reply(quote("❎ Hadiah tidak valid!"));
 
-        if (userDb?.level < claimRewards[input].level) return await ctx.reply(quote(`❎ Anda perlu mencapai level ${claimRewards[input].level} untuk mengklaim hadiah ini. Level Anda saat ini adalah ${userDb?.level || 0}.`));
+        const level = userDb?.level || 0;
+        if (level < claim.level) return await ctx.reply(quote(`❎ Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Level Anda saat ini adalah ${level}.`));
 
         const currentTime = Date.now();
-        userDb.lastClaim = userDb?.lastClaim || {};
-        const lastClaimTime = userDb?.lastClaim[input] || 0;
-        const timePassed = currentTime - lastClaimTime;
-        const remainingTime = claimRewards[input].cooldown - timePassed;
+        const lastClaim = (userDb?.lastClaim ?? {})[input] || 0;
+        const timePassed = currentTime - lastClaim;
+        const remainingTime = claim.cooldown - timePassed;
 
-        if (remainingTime > 0) return await ctx.reply(quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.general.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
+        if (remainingTime > 0) return await ctx.reply(quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
+<<<<<<< HEAD
             const rewardCredz = (userDb?.credz || 0) + claimRewards[input].reward;
             await db.set(`user.${senderId}.credz`, rewardCredz);
             await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
 
             return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claimRewards[input].reward} Credz! Credz saat ini: ${rewardCredz}.`));
+=======
+            const rewardCoin = (userDb?.coin || 0) + claim.reward;
+            await db.set(`user.${senderId}.coin`, rewardCoin);
+            await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
+
+            return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin saat ini: ${rewardCoin}.`));
+>>>>>>> master
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

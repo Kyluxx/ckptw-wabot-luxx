@@ -1,10 +1,8 @@
 // Impor modul dan dependensi yang diperlukan
 const api = require("./api.js");
 const {
-    bold,
-    italic,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const util = require("node:util");
 
@@ -13,14 +11,14 @@ async function get(type) {
         let text = "";
 
         const createList = (data, formatter) => `${data.map(formatter).join(
-            "\n" + 
+            "\n" +
             `${quote("─────")}\n`)}\n` +
             "\n" +
             config.msg.footer;
 
         switch (type) {
             case "alkitab": {
-                const data = (await axios.get(api.createUrl("https://beeble.vercel.app", "/api/v1/passage/list", {}))).data.data;
+                const data = (await axios.get(api.createUrl("https://api-alkitab.vercel.app", "/api/book"))).data.data;
                 text = createList(data, d =>
                     `${quote(`Buku: ${d.name} (${d.abbr})`)}\n` +
                     `${quote(`Jumlah Bab: ${d.chapter}`)}`
@@ -28,10 +26,10 @@ async function get(type) {
                 break;
             }
             case "alquran": {
-                const data = (await axios.get(api.createUrl("https://equran.id", "/api/v2/surat", {}))).data.data;
+                const data = (await axios.get(api.createUrl("nekorinn", "/religious/nuquran-listsurah"))).data.result.list;
                 text = createList(data, d =>
-                    `${quote(`Surah: ${d.namaLatin} (${d.nomor})`)}\n` +
-                    `${quote(`Jumlah Ayat: ${d.jumlahAyat}`)}`
+                    `${quote(`Surah: ${d.name} (${d.id})`)}\n` +
+                    `${quote(`Jumlah Ayat: ${d.verse_count}`)}`
                 );
                 break;
             }
@@ -42,7 +40,7 @@ async function get(type) {
                     "monthly (Hadiah bulanan)",
                     "yearly (Hadiah tahunan)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "fixdb": {
@@ -51,7 +49,7 @@ async function get(type) {
                     "group (Data grup)",
                     "menfess (Data menfess)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "group": {
@@ -59,9 +57,13 @@ async function get(type) {
                     "open (Buka grup)",
                     "close (Tutup grup)",
                     "lock (Kunci grup)",
-                    "unlock (Buka kunci grup)"
+                    "unlock (Buka kunci grup)",
+                    "approve (Aktifkan persetujuan masuk)",
+                    "disapprove (Nonaktifkan persetujuan masuk)",
+                    "invite (Izinkan anggota menambah anggota)",
+                    "restrict (Hanya admin yang bisa menambah anggota)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "how": {
@@ -78,7 +80,7 @@ async function get(type) {
                     "howjones (Seberapa jones)",
                     "howsadboy (Seberapa sadboy)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "mode": {
@@ -88,7 +90,7 @@ async function get(type) {
                     "public (Mode publik, merespons dalam obrolan grup dan obrolan pribadi)",
                     "self (Mode self, hanya merespons dirinya sendiri dan ownernya)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "osettext": {
@@ -96,20 +98,26 @@ async function get(type) {
                     "donate (Variabel yang tersedia: %tag%, %name%, %prefix%, %command%, %footer%, %readmore%) (Atur teks donasi)",
                     "price (Variabel yang tersedia: %tag%, %name%, %prefix%, %command%, %footer%, %readmore%) (Atur teks harga)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "setoption": {
                 const data = [
+                    "antiaudio (Anti audio)",
+                    "Antidocument (Anti dokumen)",
+                    "Antigif (Anti GIF)",
+                    "Antiimage (Anti gambar)",
                     "antilink (Anti link)",
                     "antinsfw (Anti NSFW, seperti pornografi)",
                     "antispam (Anti spam)",
                     "antisticker (Anti stiker)",
+                    "antivideo (Anti video)",
                     "antitoxic (Anti toxic, seperti bahasa kasar)",
                     "autokick (Dikeluarkan secara otomatis, jika ada yang melanggar salah satu opsi 'anti...')",
+                    "gamerestrict (Anggota dilarang bermain game)",
                     "welcome (Sambutan member)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "setprofile": {
@@ -117,20 +125,20 @@ async function get(type) {
                     "autolevelup (Otomatis naik level)",
                     "username (Nama pengguna)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "settext": {
                 const data = [
-                    "goodbye (Teks goodbye, variabel yang tersedia: %tag%, %subject%, %description%) (Atur pesan perpisahan)",
+                    "goodbye (Teks goodbye, variabel yang tersedia: %tag%, %subject%, %description%)",
                     "intro (Teks intro)",
-                    "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%) (Atur pesan selamat datang)"
+                    "welcome (Teks welcome, variabel yang tersedia: %tag%, %subject%, %description%)"
                 ];
-                text = createList(data, d => `${quote(d)}`);
+                text = createList(data, d => quote(d));
                 break;
             }
             case "translate": {
-                const data = (await axios.get(api.createUrl("nyxs", "/tools/translate", {})).catch(err => err.response.data.available_languange)) || [];
+                const data = (await axios.get(api.createUrl("nyxs", "/tools/translate")).catch(err => err.response.data.available_languange)) || [];
                 text = createList(data, d =>
                     `${quote(`Kode: ${d.code}`)}\n` +
                     `${quote(`Bahasa: ${d.bahasa}`)}`
@@ -138,7 +146,7 @@ async function get(type) {
                 break;
             }
             case "tts": {
-                const data = (await axios.get(api.createUrl("nyxs", "/tools/tts", {}))).data.available_languange;
+                const data = (await axios.get(api.createUrl("nyxs", "/tools/tts"))).data.available_languange;
                 text = createList(data, d =>
                     `${quote(`Kode: ${d.code}`)}\n` +
                     `${quote(`Bahasa: ${d["bahasa negara"]}`)}`

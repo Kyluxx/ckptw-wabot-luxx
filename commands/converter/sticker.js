@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const {
     Sticker,
     StickerTypes
@@ -12,17 +12,17 @@ module.exports = {
     category: "converter",
     permissions: {},
     code: async (ctx) => {
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, ["image", "gif", "video"]),
+            tools.cmd.checkMedia(messageType, ["image", "gif", "video"]),
             tools.cmd.checkQuotedMedia(ctx.quoted, ["image", "gif", "video"])
         ]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.cmd.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.msg.generateInstruction(["send", "reply"], ["image", "gif", "video"])));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const result = new Sticker(buffer, {
+            const sticker = new Sticker(buffer, {
                 pack: config.sticker.packname,
                 author: config.sticker.author,
                 type: StickerTypes.FULL,
@@ -31,7 +31,7 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await result.toMessage());
+            return await ctx.reply(await sticker.toMessage());
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

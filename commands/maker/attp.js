@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const {
     Sticker,
     StickerTypes
@@ -13,20 +13,21 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "get in the fucking robot, shinji!"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "get in the fucking robot, shinji!"))}\n` +
+            quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
-        if (input.length > 10000) return await ctx.reply(quote("❎ Maksimal 10000 kata!"));
+        if (input.length > 1000) return await ctx.reply(quote("❎ Maksimal 1000 kata!"));
 
         try {
-            const apiUrl = tools.api.createUrl("bk9", "/maker/text2gif", {
+            const result = tools.api.createUrl("bk9", "/maker/text2gif", {
                 q: input
             });
-            const result = new Sticker(apiUrl, {
+            const sticker = new Sticker(result, {
                 pack: config.sticker.packname,
                 author: config.sticker.author,
                 type: StickerTypes.FULL,
@@ -35,7 +36,7 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await result.toMessage());
+            return await ctx.reply(await sticker.toMessage());
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

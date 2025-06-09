@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -14,8 +14,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "evangelion"))
         );
 
         try {
@@ -24,8 +24,8 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map((r) =>
-                `${quote(`Judul: ${r.title}`)}\n` +
+            const resultText = result.map(r =>
+                `${quote(`Nama: ${r.title}`)}\n` +
                 `${quote(`Ukuran: ${r.size}`)}\n` +
                 `${quote(`URL: ${r.link}`)}`
             ).join(

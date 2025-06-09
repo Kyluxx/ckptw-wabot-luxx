@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "fixdb",
@@ -13,11 +13,11 @@ module.exports = {
         const input = ctx.args[0] || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "user"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "user"))
         );
 
-        if (input === "list") {
+        if (["l", "list"].includes(input)) {
             const listText = await tools.list.get("fixdb");
             return await ctx.reply(listText);
         }
@@ -46,6 +46,7 @@ module.exports = {
                             monthly: "number",
                             yearly: "number"
                         },
+<<<<<<< HEAD
                         hasSentMsg: {
                             banned: "boolean",
                             cooldown: "boolean",
@@ -57,6 +58,19 @@ module.exports = {
                             premium: "boolean",
                             private: "boolean",
                             restrict: "boolean"
+=======
+                        lastSentMsg: {
+                            banned: "number",
+                            cooldown: "number",
+                            admin: "number",
+                            botAdmin: "number",
+                            coin: "number",
+                            group: "number",
+                            owner: "number",
+                            premium: "number",
+                            private: "number",
+                            restrict: "number"
+>>>>>>> master
                         },
                         level: "number",
                         premium: "boolean",
@@ -66,21 +80,31 @@ module.exports = {
                         xp: "number"
                     },
                     group: {
+                        maxwarnings: "number",
                         mute: "object",
+                        mutebot: "boolean",
                         text: {
                             goodbye: "string",
                             intro: "string",
                             welcome: "string"
                         },
                         option: {
+                            antiaudio: "boolean",
+                            antidocument: "boolean",
+                            antigif: "boolean",
+                            antiimage: "boolean",
                             antilink: "boolean",
                             antinfsw: "boolean",
                             antisticker: "boolean",
+                            antitagsw: "boolean",
                             antitoxic: "boolean",
+                            antivideo: "boolean",
                             autokick: "boolean",
+                            gamerestrict: "boolean",
                             welcome: "boolean"
                         },
-                        spam: "object"
+                        spam: "object",
+                        warnings: "object"
                     },
                     menfess: {
                         from: "string",

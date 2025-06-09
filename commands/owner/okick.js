@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "okick",
@@ -12,14 +12,13 @@ module.exports = {
         restrict: true
     },
     code: async (ctx) => {
-        const senderJid = ctx.sender.jid;
-        const senderId = tools.general.getID(senderJid);
-        const accountJid = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || ctx.quoted.senderJid || null;
+        const accountJid = ctx.quoted.senderJid || ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || null;
 
         if (!accountJid) return await ctx.reply({
-            text: `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-                quote(tools.cmd.generateCommandExample(ctx.used, `@${senderId}`)),
-            mentions: [senderJid]
+            text: `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+                `${quote(tools.msg.generateCommandExample(ctx.used, `@${tools.cmd.getID(ctx.sender.jid)}`))}\n` +
+                quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target."])),
+            mentions: [ctx.sender.jid]
         });
 
         if (await ctx.group().isAdmin(accountJid)) return await ctx.reply(quote("❎ Dia adalah admin grup!"));

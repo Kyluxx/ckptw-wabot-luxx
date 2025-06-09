@@ -1,8 +1,8 @@
-const axios = require("axios");
 const {
     bold,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
+const axios = require("axios");
 const mime = require("mime-types");
 const {
     Sticker,
@@ -20,11 +20,11 @@ module.exports = {
         const url = ctx.args[0] || null;
 
         if (!url) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "https://example.com/"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "https://example.com/"))
         );
 
-        const isUrl = await tools.general.isUrl(url);
+        const isUrl = await tools.cmd.isUrl(url);
         if (!isUrl) return await ctx.reply(config.msg.urlInvalid);
 
         try {
@@ -38,23 +38,17 @@ module.exports = {
                     image: response?.data,
                     mimetype: mime.contentType(contentType)
                 });
-            }
-
-            if (/video/.test(contentType)) {
+            } else if (/video/.test(contentType)) {
                 return await ctx.reply({
                     video: response?.data,
                     mimetype: mime.contentType(contentType)
                 });
-            }
-
-            if (/audio/.test(contentType)) {
+            } else if (/audio/.test(contentType)) {
                 return await ctx.reply({
                     audio: response?.data,
                     mimetype: mime.contentType(contentType)
                 });
-            }
-
-            if (/webp/.test(contentType)) {
+            } else if (/webp/.test(contentType)) {
                 const sticker = new Sticker(response?.data, {
                     pack: config.sticker.packname,
                     author: config.sticker.author,
@@ -65,9 +59,7 @@ module.exports = {
                 });
 
                 return await ctx.reply(await sticker.toMessage());
-            }
-
-            if (!/utf-8|json|html|plain/.test(contentType)) {
+            } else if (!/utf-8|json|html|plain/.test(contentType)) {
                 const fileName = /filename/i.test(response?.headers?.["content-disposition"]) ? response?.headers?.["content-disposition"]?.match(/filename=(.*)/)?.[1]?.replace(/["";]/g, "") : "";
 
                 return await ctx.reply({
@@ -75,18 +67,18 @@ module.exports = {
                     fileName,
                     mimetype: mime.contentType(contentType)
                 });
+            } else {
+                let text = response?.data;
+                let json;
+
+                try {
+                    json = JSON.parse(text);
+                } catch (error) {
+                    json = null;
+                }
+
+                return await ctx.reply(json ? walkJSON(json) : text);
             }
-
-            let text = response?.data;
-            let json;
-
-            try {
-                json = JSON.parse(text);
-            } catch (error) {
-                json = null;
-            }
-
-            return await ctx.reply(json ? walkJSON(json) : text);
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

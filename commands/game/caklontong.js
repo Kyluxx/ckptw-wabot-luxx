@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const didYouMean = require("didyoumean");
 
@@ -16,12 +16,13 @@ module.exports = {
 
         try {
             const apiUrl = tools.api.createUrl("https://raw.githubusercontent.com", "/BochilTeam/database/refs/heads/master/games/caklontong.json");
-            const result = tools.general.getRandomElement((await axios.get(apiUrl)).data);
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data);
 
             const game = {
                 credz: 5,
                 timeout: 60000,
-                answer: result.jawaban.toLowerCase()
+                answer: result.jawaban.toLowerCase(),
+                description: result.deskripsi
             };
 
             session.set(ctx.id, true);
@@ -42,7 +43,7 @@ module.exports = {
 
             collector.on("collect", async (m) => {
                 const participantAnswer = m.content.toLowerCase();
-                const participantId = tools.general.getID(m.sender);
+                const participantId = tools.cmd.getID(m.sender);
 
                 if (participantAnswer === game.answer) {
                     session.delete(ctx.id);
@@ -58,20 +59,19 @@ module.exports = {
                         }
                     );
                     return collector.stop();
-                } else if (participantAnswer === "hint") {
+                } else if (["h", "hint"].includes(participantAnswer)) {
                     const clue = game.answer.replace(/[aiueo]/g, "_");
                     await ctx.sendMessage(ctx.id, {
                         text: monospace(clue.toUpperCase())
                     }, {
                         quoted: m
                     });
-                } else if (participantAnswer === "surrender") {
-                    const description = result.deskripsi;
+                } else if (["s", "surrender"].includes(participantAnswer)) {
                     session.delete(ctx.id);
                     await ctx.sendMessage(ctx.id, {
                         text: `${quote("🏳️ Anda menyerah!")}\n` +
-                            `${quote(`Jawabannya adalah ${tools.general.ucword(game.answer)}.`)}\n` +
-                            quote(description)
+                            `${quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}\n` +
+                            quote(game.description)
                     }, {
                         quoted: m
                     });
@@ -86,14 +86,12 @@ module.exports = {
             });
 
             collector.on("end", async () => {
-                const description = result.deskripsi;
-
                 if (session.has(ctx.id)) {
                     session.delete(ctx.id);
                     return await ctx.reply(
                         `${quote("⏱ Waktu habis!")}\n` +
-                        `${quote(`Jawabannya adalah ${tools.general.ucword(game.answer)}.`)}\n` +
-                        quote(description)
+                        `${quote(`Jawabannya adalah ${tools.msg.ucwords(game.answer)}.`)}\n` +
+                        quote(game.description)
                     );
                 }
             });

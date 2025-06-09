@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -10,18 +10,19 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "apa itu bot whatsapp?"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "apa itu bot whatsapp?"))}\n` +
+            quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("fast", "/aiexperience/aoyo", {
-                ask: input
+            const apiUrl = tools.api.createUrl("bk9", "/ai/aoyo", {
+                q: input
             });
-            const result = (await axios.get(apiUrl)).data.result.answer;
+            const result = (await axios.get(apiUrl)).data.BK9;
 
             return await ctx.reply(result);
         } catch (error) {

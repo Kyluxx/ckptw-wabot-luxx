@@ -1,7 +1,6 @@
 const {
-    bold,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const moment = require("moment-timezone");
 
@@ -21,9 +20,9 @@ module.exports = {
         try {
             const result = (await axios.get(apiUrl)).data;
 
-            const resultText = result.reverse().map((r) => {
+            const resultText = result.reverse().map(r => {
                 const formattedDate = moment.tz(r.tanggal, "Asia/Jakarta").locale("id").format("dddd, DD MMMM YYYY");
-                return `${bold(r.keterangan)}\n` +
+                return `${quote(r.keterangan)}\n` +
                     quote(formattedDate);
             }).join(
                 "\n" +

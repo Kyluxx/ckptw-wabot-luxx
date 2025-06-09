@@ -1,25 +1,26 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
-const axios = require("axios");
+} = require("@itsreimau/ckptw-mod");
 const mime = require("mime-types");
 
 module.exports = {
-    name: "nulis",
+    name: "write",
+    aliases: ["nulis", "tulis"],
     category: "maker",
     permissions: {
         credz: 10
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion itu peak!"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "get in the fucking robot, shinji!"))}\n` +
+            quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
         try {
-            const result = tools.api.createUrl("archive", "/api/maker/nulis", {
+            const result = tools.api.createUrl("archive", "/api/maker/write", {
                 text: input
             });
 

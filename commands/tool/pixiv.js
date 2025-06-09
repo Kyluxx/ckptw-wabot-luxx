@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -8,27 +8,32 @@ module.exports = {
     name: "pixiv",
     category: "tool",
     permissions: {
+<<<<<<< HEAD
         credz: 10
+=======
+        premium: 10
+>>>>>>> master
     },
     code: async (ctx) => {
-        const input = ctx.args.join(" ") || null;
+        const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "moon"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "moon"))}\n` +
+            quote(tools.msg.generateNotes(["Balas atau quote pesan untuk menjadikan teks sebagai input target, jika teks memerlukan baris baru."]))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("nekorinn", "/nsfw/pixiv", {
-                query: input
+            const apiUrl = tools.api.createUrl("nekorinn", "/search/pixiv", {
+                q: input
             });
-            const result = tools.general.getRandomElement((await axios.get(apiUrl)).data.hasil).imageUrl;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.result).imageUrl;
 
             return await ctx.reply({
                 image: {
                     url: result
                 },
-                mimetype: mime.lookup("png"),
+                mimetype: mime.lookup("jpg"),
                 caption: `${quote(`Kueri: ${input}`)}\n` +
                     "\n" +
                     config.msg.footer

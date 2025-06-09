@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "ounmute",
@@ -11,22 +11,21 @@ module.exports = {
         owner: true
     },
     code: async (ctx) => {
-        const accountJid = ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || ctx.quoted.senderJid || null;
-        const accountId = tools.general.getID(accountJid);
-        const senderJid = ctx.sender.jid;
-        const senderId = tools.general.getID(senderJid);
-        const groupId = ctx.isGroup() ? tools.general.getID(ctx.id) : null;
+        const groupId = tools.cmd.getID(ctx.id);
 
-        if (ctx.args[0] === "bot") {
+        if (["b", "bot"].includes(ctx.args[0]?.toLowerCase())) {
             await db.set(`group.${groupId}.mutebot`, true);
-            return await ctx.reply(quote("✅ Berhasil me-mute grup ini dari bot!"));
+            return await ctx.reply(quote("✅ Berhasil me-unmute grup ini dari bot!"));
         }
 
+        const accountJid = ctx.quoted.senderJid || ctx.msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || null;
+        const accountId = tools.cmd.getID(accountJid);
+
         if (!accountJid) return await ctx.reply({
-            text: `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-                `${quote(tools.cmd.generateCommandExample(ctx.used, `@${senderId}`))}\n` +
-                quote(tools.cmd.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`])),
-            mentions: [senderJid]
+            text: `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+                `${quote(tools.msg.generateCommandExample(ctx.used, `@${tools.cmd.getID(ctx.sender.jid)}`))}\n` +
+                quote(tools.msg.generateNotes(["Balas atau kutip pesan untuk menjadikan pengirim sebagai akun target.", `Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`])),
+            mentions: [ctx.sender.jid]
         });
 
         if (accountId === config.bot.id) return await ctx.reply(quote(`❎ Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} bot`)} untuk me-unmute bot.`));

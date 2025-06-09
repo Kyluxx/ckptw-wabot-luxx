@@ -1,9 +1,7 @@
 const {
-    bold,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
-const mime = require("mime-types");
 
 module.exports = {
     name: "gsmarenasearch",
@@ -16,8 +14,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "samsung galaxy j2 prime"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "samsung galaxy j2 prime"))
         );
 
         try {
@@ -26,7 +24,7 @@ module.exports = {
             });
             const result = (await axios.get(apiUrl)).data.data.data;
 
-            const resultText = result.map((r) =>
+            const resultText = result.map(r =>
                 `${quote(`Nama: ${r.name}`)}\n` +
                 `${quote(`Deskripsi: ${r.desc}`)}\n` +
                 `${quote(`URL: ${r.url}`)}`

@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -11,19 +11,19 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, "image"),
+            tools.cmd.checkMedia(messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted, "image")
         ]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.cmd.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.general.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("fast", "/aiimage/imagetoprompt-v1", {
-                url: uploadUrl
+            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const apiUrl = tools.api.createUrl("nekorinn", "/tools/img2prompt", {
+                imageUrl: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result;
 

@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -9,12 +9,12 @@ module.exports = {
     category: "converter",
     permissions: {},
     code: async (ctx) => {
-        if (!await tools.cmd.checkQuotedMedia(ctx.quoted, ["sticker"])) return await ctx.reply(quote(tools.cmd.generateInstruction(["reply"], ["sticker"])));
+        if (!await tools.cmd.checkQuotedMedia(ctx.quoted, ["sticker"])) return await ctx.reply(quote(tools.msg.generateInstruction(["reply"], ["sticker"])));
 
         try {
             const buffer = await ctx.quoted.media.toBuffer()
-            const uploadUrl = await tools.general.upload(buffer, "any");
-            const apiUrl = tools.api.createUrl("bk9", "/converter/webpToMp4", {
+            const uploadUrl = await tools.cmd.upload(buffer, "any");
+            const apiUrl = tools.api.createUrl("bk9", "/converter/webptomp4", {
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.BK9;

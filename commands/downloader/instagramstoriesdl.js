@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -15,8 +15,8 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "itsreimau"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "itsreimau"))
         );
 
         try {
@@ -28,7 +28,7 @@ module.exports = {
             for (const media of result) {
                 const isImage = media.type === "image";
                 const mediaType = isImage ? "image" : "video";
-                const extension = isImage ? "png" : "mp4";
+                const extension = isImage ? "jpg" : "mp4";
 
                 await ctx.reply({
                     [mediaType]: {

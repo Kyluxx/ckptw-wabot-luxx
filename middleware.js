@@ -3,7 +3,7 @@ const {
     Cooldown,
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -25,21 +25,20 @@ module.exports = (bot) => {
         const isGroup = ctx.isGroup();
         const isPrivate = !isGroup;
         const senderJid = ctx.sender.jid;
-        const senderId = tools.general.getID(senderJid);
+        const senderId = tools.cmd.getID(senderJid);
         const groupJid = isGroup ? ctx.id : null;
-        const groupId = isGroup ? tools.general.getID(groupJid) : null;
-        const isOwner = tools.general.isOwner(senderId, ctx.msg.key.id);
+        const groupId = isGroup ? tools.cmd.getID(groupJid) : null;
+        const isOwner = tools.cmd.isOwner(senderId, ctx.msg.key.id);
 
         // Mengambil data bot, pengguna, dan grup dari database
         const botDb = await db.get("bot") || {};
         const userDb = await db.get(`user.${senderId}`) || {};
         const groupDb = await db.get(`group.${groupId}`) || {};
-
         const muteList = groupDb?.mute || [];
 
         // Pengecekan mode bot (group, private, self) dan sistem mute
-        if ((botDb?.mode === "group" && !isGroup) || (botDb?.mode === "private" && isGroup) || (botDb?.mode === "self" && !isOwner)) return;
-        if (groupDb?.mutebot && (!isOwner && !await ctx.group().isSenderAdmin())) return;
+        if ((botDb?.mode === "group" && isPrivate) || (botDb?.mode === "private" && isGroup) || (botDb?.mode === "self" && !isOwner)) return;
+        if ((groupDb?.mutebot === true && (!isOwner && !await ctx.group().isSenderAdmin())) || (groupDb?.mutebot === "owner" && !isOwner)) return;
         if (muteList.includes(senderId)) return;
 
         // Menambah XP pengguna dan menangani level-up
@@ -53,32 +52,20 @@ module.exports = (bot) => {
 
             if (userDb?.autolevelup) {
                 const profilePictureUrl = await ctx.core.profilePictureUrl(ctx.sender.jid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-                const canvas = tools.api.createUrl("fast", "/canvas/levelup", {
-                    avatar: profilePictureUrl,
-                    background: config.bot.thumbnail,
-                    username: ctx.sender.pushName,
-                    currentLevel: userDb?.level,
-                    nextLevel: newUserLevel
-                });
-                const text = `${quote(`Selamat! Kamu telah naik ke level ${newUserLevel}!`)}\n` +
-                    `${config.msg.readmore}\n` +
-                    quote(tools.cmd.generateNotes([`Terganggu? Ketik ${monospace(`${ctx.used.prefix}setprofile autolevelup`)} untuk menonaktifkan pesan autolevelup.`]));
 
-                try {
-                    const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
-                        url: canvas
-                    }))).data.result;
-                    await ctx.reply({
-                        video: {
-                            url
-                        },
-                        mimetype: mime.lookup("mp4"),
-                        caption: text,
-                        gifPlayback: true
-                    });
-                } catch (error) {
-                    if (error.status !== 200) await ctx.reply(text);
-                }
+                await ctx.reply({
+                    text: `${quote(`Selamat! Anda telah naik ke level ${newUserLevel}!`)}\n` +
+                        `${config.msg.readmore}\n` +
+                        quote(tools.msg.generateNotes([`Terganggu? Ketik ${monospace(`${ctx.used.prefix}setprofile autolevelup`)} untuk menonaktifkan pesan autolevelup.`])),
+                    contextInfo: {
+                        externalAdReply: {
+                            title: config.bot.name,
+                            body: config.msg.note,
+                            mediaType: 1,
+                            thumbnailUrl: profilePictureUrl
+                        }
+                    }
+                });
             }
 
             await db.set(`user.${senderId}.xp`, newUserXp);
@@ -87,7 +74,10 @@ module.exports = (bot) => {
             await db.set(`user.${senderId}.xp`, newUserXp);
         }
 
-        if (config.system.autoTypingOnCmd) await ctx.simulateTyping(); // Simulasi mengetik jika diaktifkan dalam konfigurasi
+        // Simulasi mengetik jika diaktifkan dalam konfigurasi
+        const simulateTyping = async () => {
+            if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
+        };
 
         // Pengecekan kondisi pengguna
         const restrictions = [{
@@ -104,9 +94,15 @@ module.exports = (bot) => {
             },
             {
                 key: "requireBotGroupMembership",
-                condition: config.system.requireBotGroupMembership && ctx.used.command !== "botgroup" && !isOwner && !userDb?.premium && !(await ctx.group(config.bot.groupJid).members()).some(member => tools.general.getID(member.id) === senderId),
+                condition: config.system.requireBotGroupMembership && ctx.used.command !== "botgroup" && !isOwner && !userDb?.premium && !(await ctx.group(config.bot.groupJid).members()).some(member => tools.cmd.getID(member.id) === senderId),
                 msg: config.msg.botGroupMembership,
                 reaction: "🚫"
+            },
+            {
+                key: "gamerestrict",
+                condition: groupDb?.option?.gamerestrict && ctx.bot.cmd.has(ctx.used.command) && ctx.bot.cmd.get(ctx.used.command).category === "game",
+                msg: config.msg.gamerestrict,
+                reaction: "🎮"
             }
         ];
 
@@ -118,18 +114,27 @@ module.exports = (bot) => {
             }
             of restrictions) {
             if (condition) {
-                if (!userDb?.hasSentMsg?.[key]) {
-                    await ctx.reply(msg);
-                    return await db.set(`user.${senderId}.hasSentMsg.${key}`, true);
+                const now = Date.now();
+                const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
+                const oneDay = 24 * 60 * 60 * 1000;
+
+                if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
+                    await simulateTyping();
+                    await ctx.reply(
+                        `${msg}\n` +
+                        `${config.msg.readmore}\n` +
+                        quote(tools.msg.generateNotes([`Respon selanjutnya akan berupa reaksi emoji '${reaction}'.`]))
+                    );
+                    return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
                 } else {
                     return await ctx.react(ctx.id, reaction);
                 }
             }
         }
 
-        // Pengecekan izin
+        // Pengecekan kondisi perizinan
         const command = [...ctx.bot.cmd.values()].find(cmd => [cmd.name, ...(cmd.aliases || [])].includes(ctx.used.command));
-        if (!command) return next();
+        if (!command) return await next();
         const {
             permissions = {}
         } = command;
@@ -153,7 +158,7 @@ module.exports = (bot) => {
             },
             {
                 key: "group",
-                condition: !isGroup,
+                condition: isPrivate,
                 msg: config.msg.group,
                 reaction: "👥"
             },
@@ -191,15 +196,25 @@ module.exports = (bot) => {
             }
             of permissionChecks) {
             if (permissions[key] && condition) {
-                if (!userDb?.hasSentMsg?.[key]) {
-                    await ctx.reply(msg);
-                    return await db.set(`user.${senderId}.hasSentMsg.${key}`, true);
-                } else if (reaction) {
+                const now = Date.now();
+                const lastSentMsg = userDb?.lastSentMsg?.[key] || 0;
+                const oneDay = 24 * 60 * 60 * 1000;
+
+                if (!lastSentMsg || (now - lastSentMsg) > oneDay) {
+                    await simulateTyping();
+                    await ctx.reply(
+                        `${msg}\n` +
+                        `${config.msg.readmore}\n` +
+                        quote(tools.msg.generateNotes([`Respon selanjutnya akan berupa reaksi emoji '${reaction}'.`]))
+                    );
+                    return await db.set(`user.${senderId}.lastSentMsg.${key}`, now);
+                } else {
                     return await ctx.react(ctx.id, reaction);
                 }
             }
         }
 
-        await next(); // Lanjut ke proses berikutnya jika semua kondisi pengguna dan izin terpenuhi
+        await simulateTyping();
+        await next(); // Lanjut ke proses berikutnya jika semua kondisi terpenuhi
     });
 };

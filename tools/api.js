@@ -17,24 +17,33 @@ const APIs = {
     diibot: {
         baseURL: "https://api.diioffc.web.id"
     },
-    fast: {
-        baseURL: "https://fastrestapis.fasturl.cloud"
+    falcon: {
+        baseURL: "https://flowfalcon.dpdns.org"
     },
     nekorinn: {
         baseURL: "https://api.nekorinn.my.id"
     },
+    nirkyy: {
+        baseURL: "http://nirkyy.koyeb.app"
+    },
     nyxs: {
         baseURL: "https://api.nyxs.pw"
     },
-    otinxsandip: {
-        baseURL: "https://sandipbaruwal.onrender.com"
+    paxsenix: {
+        baseURL: "https://api.paxsenix.biz.id"
     },
     shizo: {
         baseURL: "https://api.shizo.top",
         APIKey: "shizo"
     },
-    vapis: {
-        baseURL: "https://vapis.my.id"
+    siputzx: {
+        baseURL: "https://api.siputzx.my.id"
+    },
+    skyzopedia: {
+        baseURL: "https://restapi-v2.simplebot.my.id"
+    },
+    velyn: {
+        baseURL: "https://velyn.biz.id"
     },
     zell: {
         baseURL: "https://apizell.web.id"
@@ -52,9 +61,7 @@ function createUrl(apiNameOrURL, endpoint, params = {}, apiKeyParamName) {
 
         const queryParams = new URLSearchParams(params);
 
-        if (apiKeyParamName && api && "APIKey" in api) {
-            queryParams.set(apiKeyParamName, api.APIKey);
-        }
+        if (apiKeyParamName && api && "APIKey" in api) queryParams.set(apiKeyParamName, api.APIKey);
 
         const baseURL = api ? api.baseURL : apiNameOrURL.origin;
         const apiUrl = new URL(endpoint, baseURL);

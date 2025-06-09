@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "listbanned",
@@ -21,11 +21,11 @@ module.exports = {
             let resultText = "";
             let userMentions = [];
 
-            bannedUsers.forEach((userId) => {
+            bannedUsers.forEach(userId => {
                 resultText += `${quote(`@${userId}`)}\n`;
             });
 
-            bannedUsers.forEach((userId) => {
+            bannedUsers.forEach(userId => {
                 userMentions.push(`${userId}@s.whatsapp.net`);
             });
 

@@ -1,27 +1,28 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const mime = require("mime-types");
 
 module.exports = {
     name: "toghibli",
+    aliases: ["jadighibli"],
     category: "ai-misc",
     permissions: {
         premium: true
     },
     code: async (ctx) => {
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, "image"),
+            tools.cmd.checkMedia(messageType, "image"),
             tools.cmd.checkQuotedMedia(ctx.quoted, "image")
         ]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.cmd.generateInstruction(["send", "reply"], "image")));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.msg.generateInstruction(["send", "reply"], "image")));
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.general.upload(buffer, "image");
-            const result = tools.api.createUrl("https://fgsi1-restapi.hf.space", "/api/ai/toGhibli", {
+            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const result = tools.api.createUrl("nirkyy", "/api/v1/ghiblistyle", {
                 url: uploadUrl
             });
 
@@ -29,7 +30,7 @@ module.exports = {
                 image: {
                     url: result
                 },
-                mimetype: mime.lookup("png")
+                mimetype: mime.lookup("jpeg")
             });
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);

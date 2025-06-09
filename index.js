@@ -21,17 +21,6 @@ const dbFile = path.join(__dirname, "database.json");
 if (!fs.existsSync(dbFile)) fs.writeFileSync(dbFile, "{}", "utf8");
 const db = new SimplDB();
 
-// Hapus folder autentikasi jika kosong (untuk bot dengan adapter default)
-if (config.bot.authAdapter.adapter === "default") {
-    const authDir = path.resolve(__dirname, config.bot.authAdapter.default.authDir);
-    if (fs.existsSync(authDir) && !fs.readdirSync(authDir).length) {
-        fs.rmSync(authDir, {
-            recursive: true,
-            force: true
-        });
-    }
-}
-
 // Tetapkan konfigurasi dan alat ke variabel global
 Object.assign(global, {
     config,
@@ -64,7 +53,7 @@ if (config.system.useServer) {
     const {
         port
     } = config.system;
-    http.createServer((_, res) => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => c.success(`${pkg.name} runs on port ${port}`));
+    http.createServer(res => res.end(`${pkg.name} berjalan di port ${port}`)).listen(port, () => c.success(`${pkg.name} runs on port ${port}`));
 }
 
 require("./main.js"); // Jalankan modul utama

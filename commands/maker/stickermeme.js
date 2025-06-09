@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const {
     Sticker,
     StickerTypes
@@ -17,28 +17,28 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "get in the fucking robot|shinji!"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "get in the fucking robot|shinji!"))
         );
 
-        const msgType = ctx.getMessageType();
+        const messageType = ctx.getMessageType();
         const [checkMedia, checkQuotedMedia] = await Promise.all([
-            tools.cmd.checkMedia(msgType, ["image", "sticker"]),
+            tools.cmd.checkMedia(messageType, ["image", "sticker"]),
             tools.cmd.checkQuotedMedia(ctx.quoted, ["image", "sticker"])
         ]);
 
-        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.cmd.generateInstruction(["send", "reply"], ["image", "sticker"])));
+        if (!checkMedia && !checkQuotedMedia) return await ctx.reply(quote(tools.msg.generateInstruction(["send", "reply"], ["image", "sticker"])));
 
         try {
             let [top, bottom] = input.split("|").map(i => i.trim());
             [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
 
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-            const uploadUrl = await tools.general.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.png`, {
+            const uploadUrl = await tools.cmd.upload(buffer, "image");
+            const result = tools.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.png`, {
                 background: uploadUrl
             });
-            const result = new Sticker(apiUrl, {
+            const sticker = new Sticker(result, {
                 pack: config.sticker.packname,
                 author: config.sticker.author,
                 type: StickerTypes.FULL,
@@ -47,7 +47,7 @@ module.exports = {
                 quality: 50
             });
 
-            return await ctx.reply(await result.toMessage());
+            return await ctx.reply(await sticker.toMessage());
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, true);
         }

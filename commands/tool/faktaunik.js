@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
         const apiUrl = tools.api.createUrl("https://cinnabar.icaksh.my.id", "/public/daily/tawiki");
 
         try {
-            const result = tools.general.getRandomElement((await axios.get(apiUrl)).data.data.info).tahukah_anda;
+            const result = tools.cmd.getRandomElement((await axios.get(apiUrl)).data.data.info).tahukah_anda;
 
             return await ctx.reply(quote(`Tahukah Anda? ${result}`));
         } catch (error) {

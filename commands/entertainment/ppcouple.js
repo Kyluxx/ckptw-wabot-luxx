@@ -9,7 +9,7 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-        const apiUrl = tools.api.createUrl("otinxsandip", "/dp");
+        const apiUrl = tools.api.createUrl("https://sandipbaruwal.onrender.com", "/dp");
 
         try {
             const result = (await axios.get(apiUrl)).data;
@@ -19,13 +19,13 @@ module.exports = {
                     image: {
                         url: result.male
                     },
-                    mimetype: mime.lookup("png")
+                    mimetype: mime.lookup("jpg")
                 }),
                 ctx.reply({
                     image: {
                         url: result.female
                     },
-                    mimetype: mime.lookup("png")
+                    mimetype: mime.lookup("jpg")
                 })
             ]);
         } catch (error) {

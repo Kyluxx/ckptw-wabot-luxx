@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 
 module.exports = {
@@ -14,20 +14,20 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(tools.cmd.generateInstruction(["send"], ["text"]))}\n` +
-            quote(tools.cmd.generateCommandExample(ctx.used, "evangelion"))
+            `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +
+            quote(tools.msg.generateCommandExample(ctx.used, "evangelion"))
         );
 
         try {
-            const apiUrl = tools.api.createUrl("fast", "/search/gsearch", {
-                ask: input
+            const apiUrl = tools.api.createUrl("nekorinn", "/search/google", {
+                q: input
             });
             const result = (await axios.get(apiUrl)).data.result;
 
-            const resultText = result.map((r) =>
+            const resultText = result.map(r =>
                 `${quote(`Judul: ${r.title}`)}\n` +
-                `${quote(`Deskripsi: ${r.description}`)}\n` +
-                `${quote(`URL: ${r.link}`)}`
+                `${quote(`Deskripsi: ${r.desc}`)}\n` +
+                `${quote(`URL: ${r.url}`)}`
             ).join(
                 "\n" +
                 `${quote("─────")}\n`

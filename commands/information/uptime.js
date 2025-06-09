@@ -1,7 +1,7 @@
 
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "uptime",
@@ -9,7 +9,6 @@ module.exports = {
     category: "information",
     permissions: {},
     code: async (ctx) => {
-        const uptime = tools.general.convertMsToDuration(Date.now() - config.bot.readyAt);
-        return await ctx.reply(quote(`🚀 Bot telah aktif selama ${uptime}.`));
+        return await ctx.reply(quote(`🚀 Bot telah aktif selama ${config.bot.uptime}.`));
     }
 };

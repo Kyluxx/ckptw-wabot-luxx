@@ -1,7 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
-const axios = require("axios");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "listapis",
@@ -13,9 +12,7 @@ module.exports = {
             const APIs = tools.api.listUrl();
             let resultText = "";
 
-            for (const [name, api] of Object.entries(APIs)) {
-                resultText += quote(`${api.baseURL}\n`);
-            }
+            for (const [name, api] of Object.entries(APIs)) resultText += quote(`${api.baseURL}\n`);
 
             return await ctx.reply(
                 `${quote("Daftar API yang digunakan:")}\n` +

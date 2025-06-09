@@ -1,7 +1,7 @@
 const {
     monospace,
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 
 module.exports = {
     name: "group",
@@ -15,12 +15,12 @@ module.exports = {
         const input = ctx.args.join(" ") || null;
 
         if (!input) return await ctx.reply(
-            `${quote(`${tools.cmd.generateInstruction(["send"], ["text"])}`)}\n` +
-            `${quote(tools.cmd.generateCommandExample(ctx.used, "open"))}\n` +
-            quote(tools.cmd.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
+            `${quote(`${tools.msg.generateInstruction(["send"], ["text"])}`)}\n` +
+            `${quote(tools.msg.generateCommandExample(ctx.used, "open"))}\n` +
+            quote(tools.msg.generateNotes([`Ketik ${monospace(`${ctx.used.prefix + ctx.used.command} list`)} untuk melihat daftar.`]))
         );
 
-        if (input === "list") {
+        if (["l", "list"].includes(input.toLowerCase())) {
             const listText = await tools.list.get("group");
             return await ctx.reply(listText);
         }
@@ -28,16 +28,22 @@ module.exports = {
         try {
             switch (input.toLowerCase()) {
                 case "open":
-                    await ctx.group().open();
-                    break;
                 case "close":
-                    await ctx.group().close();
-                    break;
                 case "lock":
-                    await ctx.group().lock();
-                    break;
                 case "unlock":
-                    await ctx.group().unlock();
+                    await ctx.group()[input.toLowerCase()]();
+                    break;
+                case "approve":
+                    await ctx.group().joinApproval("on");
+                    break;
+                case "disapprove":
+                    await ctx.group().joinApproval("off");
+                    break;
+                case "invite":
+                    await ctx.group().membersCanAddMemberMode("on");
+                    break;
+                case "restrict":
+                    await ctx.group().membersCanAddMemberMode("off");
                     break;
                 default:
                     return await ctx.reply(quote("❎ Teks tidak valid!"));

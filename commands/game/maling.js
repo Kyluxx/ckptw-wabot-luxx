@@ -105,6 +105,7 @@ module.exports = {
           return ctx.reply(quote(MESSAGES.results.immortalRevive));
         }
         await db.set(`user.${senderId}.credz`, 0);
+	await db.set(`user.${senderId}.chips`, 0);
         const message = pick(MESSAGES.results.die)();
         return ctx.reply(quote(message));
       }

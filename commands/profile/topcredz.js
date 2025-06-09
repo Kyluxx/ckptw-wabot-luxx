@@ -21,7 +21,7 @@ module.exports = {
                 .sort((a, b) => b.credz - a.credz);
 
             const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
-            const topUsers = leaderboardData.slice(2, 12);
+            const topUsers = leaderboardData.slice(4, 14);
             let resultText = "";
 
             topUsers.forEach((user, index) => {

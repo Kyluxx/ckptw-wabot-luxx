@@ -5,7 +5,7 @@ const { monospace, quote } = require("@mengkodingan/ckptw");
 
 module.exports = {
   name: "credz",
-  aliases: ["Credz", "cred", "bal", "coin"],
+  aliases: ["cred", "bal", "coin"],
   category: "profile",
   permissions: {},
   code: async (ctx) => {
@@ -22,13 +22,15 @@ module.exports = {
       
       const wallet = targetDb.credz || 0;
       const bank = targetDb.bank || 0;
+      const chips = targetDb.chips || 0;
       const bankLimit = targetDb.bankLimit ?? 100;
       
       // Build response
       const userLabel = targetId === senderId ? "Anda" : `Pengguna ${targetId}`;
       const resp = `💰 ${userLabel} memiliki:\n` +
       `• Wallet: ${monospace(wallet.toString())} Credz\n` +
-      `• Bank : ${monospace(bank.toString())}/${monospace(bankLimit.toString())} Credz`;
+      `• Bank : ${monospace(bank.toString())}/${monospace(bankLimit.toString())} Credz\n` +
+      `• Chips : ${chips}`
       
       // Unlimited for owner/premium
       if ((tools.general.isOwner(senderId, ctx.msg.key.id) && !targetJid) || (userDb.premium && !targetJid)) {

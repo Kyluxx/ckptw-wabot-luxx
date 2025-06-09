@@ -43,7 +43,7 @@ module.exports = {
     const reward = blocks * 7; // tiap blok 10 Coin
 
     // tambahkan koin ke database
-    await db.add(`user.${userId}.coin`, reward);
+    await db.add(`user.${userId}.credz`, reward);
 
     return ctx.reply(
       `${quote(`⛏️ Kamu mining dengan ${monospace(pickaxe)} pickaxe!`)}\n` +

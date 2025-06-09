@@ -104,10 +104,13 @@ function generateUID(id, withBotName) {
 }
 
 function getID(jid) {
-    if (!jid) return null;
-
-    return jid.split("@")[0].split(":")[0];
+  if (!jid) return null;
+  // buang semua @ di depan
+  const clean = jid.replace(/^@+/, "");
+  // baru ambil sebelum @ server
+  return clean.split("@")[0].split(":")[0];
 }
+
 
 function getRandomElement(arr) {
     if (!arr || !arr.length) return null;

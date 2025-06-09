@@ -4,6 +4,7 @@ const {
     monospace,
     quote
 } = require("@itsreimau/ckptw-mod");
+const tools = require("./tools/exports");
 const axios = require("axios");
 const mime = require("mime-types");
 

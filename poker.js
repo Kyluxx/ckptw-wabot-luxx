@@ -9,7 +9,7 @@
  * Details: no check allowed after raise, join bet uniform, proper poker hand evaluation
  */
 
-const { quote, monospace } = require("@mengkodingan/ckptw");
+const { quote, monospace } = require("@itsreimau/ckptw-mod");
 const { evaluate } = require("poker-hand-evaluator");
 
 const sessions = new Map();

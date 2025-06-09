@@ -1,5 +1,5 @@
 // blackjack.js
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 // prevent multiple games in same chat
 const sessions = new Map();

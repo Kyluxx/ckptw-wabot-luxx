@@ -1,5 +1,5 @@
 // roulette_refactored.js
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 module.exports = {
   name: "roulette",
@@ -60,7 +60,7 @@ module.exports = {
 
       // outcome
       if (color === resultKey) {
-        const winAmount = color === "hijau" ? amount * 5 : amount;
+        const winAmount = color === "hijau" ? amount * 3 : amount;
         await db.add(`${userKey}.chips`, winAmount);
         text += `🎉 Selamat! Anda menang ${winAmount} chips!`;
       } else {

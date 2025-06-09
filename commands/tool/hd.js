@@ -1,11 +1,7 @@
 const {
     quote
-<<<<<<< HEAD
-} = require("@mengkodingan/ckptw");
-const { Consolefy } = require("@mengkodingan/consolefy");
-=======
 } = require("@itsreimau/ckptw-mod");
->>>>>>> master
+const { Consolefy } = require("@mengkodingan/consolefy");
 const axios = require("axios");
 const mime = require("mime-types");
 
@@ -27,13 +23,8 @@ module.exports = {
 
         try {
             const buffer = await ctx.msg.media.toBuffer() || await ctx.quoted.media.toBuffer();
-<<<<<<< HEAD
             const uploadUrl = await tools.general.upload(buffer, "image");
             const apiUrl = await tools.api.createUrl("zell", "/tools/hd2", {
-=======
-            const uploadUrl = await tools.cmd.upload(buffer, "image");
-            const apiUrl = tools.api.createUrl("zell", "/tools/hd2", {
->>>>>>> master
                 url: uploadUrl
             });
             const result = (await axios.get(apiUrl)).data.result.upscaled;

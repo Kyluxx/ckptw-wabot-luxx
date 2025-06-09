@@ -1,4 +1,4 @@
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 const COOLDOWN = 10 * 60 * 1000;       // 1 hour cooldown for stream
 const VIEWER_TIMEOUT = 30 * 60 * 1000; // 30 minutes before viewers drop

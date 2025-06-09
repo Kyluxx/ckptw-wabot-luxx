@@ -1,5 +1,5 @@
 // chip.js
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 // Commands for buying and selling chips, chips stored in db
 module.exports =

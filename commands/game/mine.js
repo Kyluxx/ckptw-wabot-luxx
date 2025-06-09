@@ -1,4 +1,4 @@
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 const COOLDOWN = 5 * 60 * 1000; // 5 menit
 

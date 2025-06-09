@@ -12,11 +12,7 @@ module.exports = {
         credz: 10
     },
     code: async (ctx) => {
-<<<<<<< HEAD
-        const input = ctx.args.join("_") || null;
-=======
         const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;;
->>>>>>> master
 
         if (!input) return await ctx.reply(
             `${quote(tools.msg.generateInstruction(["send"], ["text"]))}\n` +

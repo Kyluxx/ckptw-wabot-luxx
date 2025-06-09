@@ -2,7 +2,7 @@ const {
     quote
 } = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
-
+const tools = require("../../tools/exports");
 module.exports = {
     name: "bagoodex",
     category: "ai-chat",

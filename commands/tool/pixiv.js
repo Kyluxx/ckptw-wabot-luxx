@@ -8,11 +8,7 @@ module.exports = {
     name: "pixiv",
     category: "tool",
     permissions: {
-<<<<<<< HEAD
         credz: 10
-=======
-        premium: 10
->>>>>>> master
     },
     code: async (ctx) => {
         const input = ctx.args.join(" ") || ctx.quoted?.conversation || Object.values(ctx.quoted).map(q => q?.text || q?.caption).find(Boolean) || null;

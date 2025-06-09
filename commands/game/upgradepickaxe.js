@@ -1,4 +1,4 @@
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 module.exports = {
   name: "upgradepickaxe",

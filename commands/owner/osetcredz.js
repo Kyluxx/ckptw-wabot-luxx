@@ -1,7 +1,7 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
-
+} = require("@itsreimau/ckptw-mod");
+const tools = require("../../tools/exports");
 module.exports = {
     name: "osetcredzuser",
     aliases: ["setcredz", "scu"],

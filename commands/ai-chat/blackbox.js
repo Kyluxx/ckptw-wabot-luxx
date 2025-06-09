@@ -1,8 +1,8 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
-
+const tools = require("../../tools/exports");
 module.exports = {
     name: "blackbox",
     aliases: ["bb"],

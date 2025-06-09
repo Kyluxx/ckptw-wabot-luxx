@@ -1,6 +1,6 @@
 
 // slot.js
-const { quote, monospace } = require("@mengkodingan/ckptw");
+const { quote, monospace } = require("@itsreimau/ckptw-mod");
 
 // Commands for dice and slot games, chips stored in db
 module.exports = {

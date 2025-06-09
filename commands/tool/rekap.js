@@ -1,6 +1,6 @@
 const {
     quote
-} = require("@mengkodingan/ckptw");
+} = require("@itsreimau/ckptw-mod");
 function rekapDetail(input) {
     // 1. Split blok berdasarkan blank line
     const blocks = input.trim().split(/\r?\n\s*\r?\n/);

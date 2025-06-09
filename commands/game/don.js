@@ -1,5 +1,5 @@
 // doubleornothing.js
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 // prevent multiple games per chat
 const sessions = new Map();
@@ -42,7 +42,7 @@ module.exports = {
       let current = bet * 2; // first win would be double
 
       // perform first flip
-      const win = Math.random() < 0.5;
+      const win = Math.random() < 0.4;
       if (!win) {
         sessions.delete(chatId);
         return ctx.reply(quote(
@@ -72,7 +72,7 @@ module.exports = {
           collector.stop();
         } else if (cmd === 'double') {
           // attempt next flip
-          const winNext = Math.random() < 0.5;
+          const winNext = Math.random() < 0.4;
           if (!winNext) {
             sessions.delete(chatId);
             await ctx.sendMessage(chatId, { text: quote(

@@ -25,11 +25,7 @@ module.exports = {
         const senderId = tools.cmd.getID(ctx.sender.jid);
         const userDb = await db.get(`user.${senderId}`) || {};
 
-<<<<<<< HEAD
         if (tools.general.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Anda sudah memiliki Credz tak terbatas, tidak perlu mengklaim lagi."));
-=======
-        if (tools.cmd.isOwner(senderId, ctx.msg.key.id) || userDb?.premium) return await ctx.reply(quote("❎ Anda sudah memiliki koin tak terbatas, tidak perlu mengklaim lagi."));
->>>>>>> master
 
         if (!claim) return await ctx.reply(quote("❎ Hadiah tidak valid!"));
 
@@ -44,19 +40,11 @@ module.exports = {
         if (remainingTime > 0) return await ctx.reply(quote(`⏳ Anda telah mengklaim hadiah ${input}. Tunggu ${tools.msg.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
-<<<<<<< HEAD
             const rewardCredz = (userDb?.credz || 0) + claimRewards[input].reward;
             await db.set(`user.${senderId}.credz`, rewardCredz);
             await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
 
             return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claimRewards[input].reward} Credz! Credz saat ini: ${rewardCredz}.`));
-=======
-            const rewardCoin = (userDb?.coin || 0) + claim.reward;
-            await db.set(`user.${senderId}.coin`, rewardCoin);
-            await db.set(`user.${senderId}.lastClaim.${input}`, currentTime);
-
-            return await ctx.reply(quote(`✅ Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin saat ini: ${rewardCoin}.`));
->>>>>>> master
         } catch (error) {
             return await tools.cmd.handleError(ctx, error, false);
         }

@@ -1,7 +1,7 @@
 const {
     quote
 } = require("@itsreimau/ckptw-mod");
-
+const tools = require("../../tools/exports.js");
 module.exports = {
     name: "ping",
     category: "information",

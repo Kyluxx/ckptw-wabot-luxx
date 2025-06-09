@@ -3,7 +3,7 @@ const {
 } = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
 const mime = require("mime-types");
-
+const tools = require("../../tools/exports");
 module.exports = {
     name: "copilot",
     category: "ai-chat",

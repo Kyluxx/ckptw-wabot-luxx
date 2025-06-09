@@ -1,4 +1,4 @@
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 // Message templates
 const MESSAGES = {
@@ -6,7 +6,7 @@ const MESSAGES = {
     noTarget: "Silakan mention atau input ID target yang ingin dirob",
     notFound: "❎ User tidak ditemukan",
     onCooldown: (time) => `❎ Anda masih memiliki cooldown. Silakan tunggu ${time} lagi.`,
-    banned: "Mau maling apa ya? Pergi jauh jauh, ck",
+    banned: "Hayoo mau maling ya? Kamu saya ke barak in",
     noCredz: "Target tidak memiliki Credz untuk dimaling",
     lockpad: "🔒 Wah! Lockpad aktif, upaya maling dibatalkan dan kamu ketahuan!",
   },
@@ -48,8 +48,11 @@ module.exports = {
         return ctx.reply(quote(MESSAGES.prompts.noTarget));
       }
 
-      const senderId = tools.general.getID(ctx.sender.jid);
+      const realSenderJid = ctx.msg.key.participant || ctx.sender.jid;
+      const senderId = tools.general.getID(realSenderJid);
       const targetId = tools.general.getID(targetJid);
+
+      // console.log('TARGETJID: ' + targetJid + ' targetId: ' + targetId);
 
       const userDb = (await db.get(`user.${senderId}`)) || {};
       const targetDb = await db.get(`user.${targetId}`);
@@ -60,7 +63,8 @@ module.exports = {
       // Cooldown check
       const now = Date.now();
       const cdKey = `user.${senderId}.cd.maling`;
-      const nextAvailable = (await db.get(cdKey)) || 0;
+      let nextAvailable = (await db.get(cdKey)) || 0;
+      if(tools.general.isOwner(senderId, ctx.msg.key.id)) nextAvailable = 0;
       if (nextAvailable > now) {
         const waitTime = tools.general.convertMsToDuration(nextAvailable - now + 600000);
         return ctx.reply(quote(MESSAGES.prompts.onCooldown(waitTime)));
@@ -101,11 +105,11 @@ module.exports = {
       const willDie = Math.random() < 0.2;
       if (willDie) {
         if (userDb.immortality) {
-          userDb.immortality = false;
+          await db.set('userDb.immortality', false)
           return ctx.reply(quote(MESSAGES.results.immortalRevive));
         }
         await db.set(`user.${senderId}.credz`, 0);
-	await db.set(`user.${senderId}.chips`, 0);
+	      await db.set(`user.${senderId}.chips`, 0);
         const message = pick(MESSAGES.results.die)();
         return ctx.reply(quote(message));
       }

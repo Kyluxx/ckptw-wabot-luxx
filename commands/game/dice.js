@@ -1,6 +1,5 @@
-
 // dice.js
-const { quote, monospace } = require("@mengkodingan/ckptw");
+const { quote, monospace } = require("@itsreimau/ckptw-mod");
 
 // Commands for dice and slot games, chips stored in db
 module.exports = 
@@ -49,10 +48,10 @@ module.exports =
 
         const result = Math.floor(Math.random()*6)+1;
         let win=false, multiplier=0;
-        if ((choice==='ganjil'&&result%2)||(choice==='genap'&&result%2===0)) {
-          win=true; multiplier=2;
+        if ((choice==='ganjil'&&result%2===1)||(choice==='genap'&&result%2===0)) {
+          win=true; multiplier=1.6;
         } else if (choice===result.toString()) {
-          win=true; multiplier=6;
+          win=true; multiplier=6.4;
         }
 
         const change = win ? bet*(multiplier-1) : -bet;

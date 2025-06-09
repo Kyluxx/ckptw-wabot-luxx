@@ -1,5 +1,5 @@
 // minesweeper_refactored.js
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 /**
  * Game settings
  */

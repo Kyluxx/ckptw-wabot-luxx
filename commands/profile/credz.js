@@ -1,6 +1,6 @@
 
 // bal.js (credz/balance)
-const { monospace, quote } = require("@mengkodingan/ckptw");
+const { monospace, quote } = require("@itsreimau/ckptw-mod");
 
 
 module.exports = {
@@ -33,9 +33,9 @@ module.exports = {
       `• Chips : ${chips}`
       
       // Unlimited for owner/premium
-      if ((tools.general.isOwner(senderId, ctx.msg.key.id) && !targetJid) || (userDb.premium && !targetJid)) {
-        return await ctx.reply(quote("🤑 Anda memiliki Credz tak terbatas."));
-      }
+      // if ((tools.general.isOwner(senderId, ctx.msg.key.id) && !targetJid) || (userDb.premium && !targetJid)) {
+      //   return await ctx.reply(quote("🤑 Anda memiliki Credz tak terbatas."));
+      // }
 
       return await ctx.reply(quote(resp));
     } catch (error) {

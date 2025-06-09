@@ -1,16 +1,10 @@
 const {
-<<<<<<< HEAD
   quote
-} = require("@mengkodingan/ckptw");
-=======
-    quote
 } = require("@itsreimau/ckptw-mod");
->>>>>>> master
 const axios = require("axios");
 const mime = require("mime-types");
 
 module.exports = {
-<<<<<<< HEAD
   name: "profile",
   aliases: ["me", "prof", "profil"],
   category: "profile",
@@ -20,16 +14,6 @@ module.exports = {
           const senderName = ctx.sender.pushName;
           const senderJid = ctx.sender.jid;
           const senderId = tools.general.getID(senderJid);
-=======
-    name: "profile",
-    aliases: ["me", "prof", "profil"],
-    category: "profile",
-    permissions: {},
-    code: async (ctx) => {
-        try {
-            const senderJid = ctx.sender.jid;
-            const senderId = tools.cmd.getID(senderJid);
->>>>>>> master
 
           const leaderboardData = Object.entries((await db.toJSON()).user)
               .map(([id, data]) => ({
@@ -39,7 +23,6 @@ module.exports = {
               }))
               .sort((a, b) => b.winGame - a.winGame || b.level - a.level);
 
-<<<<<<< HEAD
           const userDb = await db.get(`user.${senderId}`) || {};
           const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
           const isOwner = tools.general.isOwner(senderId, ctx.msg.key.id);
@@ -85,34 +68,4 @@ module.exports = {
           return await tools.cmd.handleError(ctx, error, false);
       }
   }
-=======
-            const userDb = await db.get(`user.${senderId}`) || {};
-            const isOwner = tools.cmd.isOwner(senderId, ctx.msg.key.id);
-            const profilePictureUrl = await ctx.core.profilePictureUrl(senderJid, "image").catch(() => "https://i.pinimg.com/736x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg");
-
-            return await ctx.reply({
-                text: `${quote(`Nama: ${ctx.sender.pushName}`)}\n` +
-                    `${quote(`Username: ${userDb?.username}`)}\n` +
-                    `${quote(`Status: ${isOwner ? "Owner" : userDb?.premium ? "Premium" : "Freemium"}`)}\n` +
-                    `${quote(`Level: ${userDb?.level || 0}`)}\n` +
-                    `${quote(`XP: ${userDb?.xp}/100`)}\n` +
-                    `${quote(`Koin: ${isOwner || userDb?.premium ? "Tak terbatas" : userDb?.coin}`)}\n` +
-                    `${quote(`Peringkat: ${leaderboardData.findIndex(user => user.id === senderId) + 1}`)}\n` +
-                    `${quote(`Menang: ${userDb?.winGame || 0}`)}\n` +
-                    "\n" +
-                    config.msg.footer,
-                contextInfo: {
-                    externalAdReply: {
-                        title: config.bot.name,
-                        body: config.msg.note,
-                        mediaType: 1,
-                        thumbnailUrl: profilePictureUrl
-                    }
-                }
-            });
-        } catch (error) {
-            return await tools.cmd.handleError(ctx, error, false);
-        }
-    }
->>>>>>> master
 };

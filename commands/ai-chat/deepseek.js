@@ -2,7 +2,7 @@ const {
     quote
 } = require("@itsreimau/ckptw-mod");
 const axios = require("axios");
-
+const tools = require("../../tools/exports");
 module.exports = {
     name: "deepseek",
     category: "ai-chat",
@@ -19,22 +19,10 @@ module.exports = {
         );
 
         try {
-<<<<<<< HEAD
-            // const senderUid = await db.get(`user.${tools.general.getID(ctx.sender.jid)}.uid`) || "guest";
-            const prompt = `START PROMPT You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging. Dan balas dengan bahasa indonesia END PROMPT `
-            const url = "https://www.archive-ui.biz.id/api/ai/deepseek-r1?text" + prompt.replace(" ", "+") + input.replace(" ", "+")
-            // const apiUrl = tools.api.createUrl("fast", "/aistream/deepseek", {
-            //     ask: input,
-            //     style: `You are a WhatsApp bot named ${config.bot.name}, owned by ${config.owner.name}. Be friendly, informative, and engaging.`, // Dapat diubah sesuai keinginan Anda
-            //     sessionId: senderUid
-            // });
-            const result = (await axios.get(url)).data;
-=======
             const apiUrl = tools.api.createUrl("archive", "/api/ai/deepseek-coder-67b", {
                 text: input
             });
             const result = (await axios.get(apiUrl)).data.result;
->>>>>>> master
 
             return await ctx.reply(result);
         } catch (error) {

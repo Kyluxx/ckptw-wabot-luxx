@@ -43,9 +43,9 @@ module.exports = {
       // undi nomor acak 1-99
       const result = Math.floor(Math.random() * 99) + 1;
       let area;
-      if (result > 50) area = "high";
-      else if (result < 50) area = "low";
-      else area = "middle"; // tepat 50
+      if (result > 66){ area = "high";}
+      else if (result < 34){ area = "low";}
+      else{ area = "middle";}
 
       db.subtract(`user.${userId}.chips`, amount)
 
@@ -56,7 +56,7 @@ module.exports = {
       // tentukan menang atau kalah dan pembayaran
       let payout;
       if (choice === area) {
-        const mult = area === "middle" ? 100 : 2;
+        const mult = 2;
         payout = amount * mult;
         await db.add(`user.${userId}.chips`, payout);
         text += `🎉 Boom! Anda menebak *${area}*! Anda menang ${amount} x${mult} = ${payout} chips!\n`;

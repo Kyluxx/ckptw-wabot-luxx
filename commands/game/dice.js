@@ -52,7 +52,7 @@ module.exports =
         if ((choice==='ganjil'&&result%2)||(choice==='genap'&&result%2===0)) {
           win=true; multiplier=2;
         } else if (choice===result.toString()) {
-          win=true; multiplier=6;
+          win=true; multiplier=5;
         }
 
         const change = win ? bet*(multiplier-1) : -bet;

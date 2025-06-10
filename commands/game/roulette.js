@@ -47,8 +47,8 @@ module.exports = {
 
       // weighted spin: merah 3/7, hitam 3/7, hijau 1/7
       const wheel = [
-        ...Array(4).fill("merah"),
-        ...Array(4).fill("hitam"),
+        ...Array(2).fill("merah"),
+        ...Array(2).fill("hitam"),
         "hijau"
       ];
       const idx = Math.floor(Math.random() * wheel.length);
@@ -60,7 +60,7 @@ module.exports = {
 
       // outcome
       if (color === resultKey) {
-        const winAmount = color === "hijau" ? amount * 5 : amount;
+        const winAmount = color === "hijau" ? amount * 3 : amount;
         await db.add(`${userKey}.chips`, winAmount);
         text += `🎉 Selamat! Anda menang ${winAmount} chips!`;
       } else {

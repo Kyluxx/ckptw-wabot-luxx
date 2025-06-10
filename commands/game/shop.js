@@ -27,8 +27,8 @@ const items = [
     aliases: ["lp", "laptop"],
     price: 500,
     description: "Mendapatkan Laptop untuk streaming",
-    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
-      if(`${userPath}.laptop` === true) {
+    effect: async ({ senderId, userPath, userData, quantity, db, ctx, item }) => {
+      if(userData.laptop === true) {
         return ctx.reply(quote(` Kamu sudah punya Laptop!`));
       }
       if (quantity > 1) {
@@ -46,8 +46,8 @@ const items = [
     aliases: ["sd"],
     price: 500,
     description: "Kemungkinan berhasil maling meningkat 20%, hanya 1x penggunaan",
-    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
-      if(`${userPath}.stealer` === true) {
+    effect: async ({ senderId, userPath, userData, quantity, db, ctx, item }) => {
+      if(userData.stealer === true) {
         return ctx.reply(quote(` Kamu sudah punya Stealer Device!`));
       }
       if (quantity > 1) {
@@ -65,7 +65,7 @@ const items = [
     aliases: ["lpd"],
     price: 5000,
     description: "Melindungi akun kamu dari perampokan, berlaku 8 jam",
-    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
+    effect: async ({ senderId, userPath, userData, quantity, db, ctx, item }) => {
       if (quantity > 1) {
         return ctx.reply(quote(` Maksimal pembelian ${item.name} adalah 1`));
       }
@@ -73,7 +73,7 @@ const items = [
       if (sender.lockpad_time && Date.now() - sender.lockpad_time < 8 * 60 * 60 * 1000) {
         return ctx.reply(quote(` Kamu masih memiliki LockPad Device yang aktif!`));
       }
-      await db.add(`${userPath}.lockpad_time`, Date.now());
+      await db.set(`${userPath}.lockpad_time`, Date.now());
       return ctx.reply(
         quote(` Berhasil membeli 1x ${item.name}! \n` +
           `LockPad Device akan aktif selama 8 jam kedepan`)
@@ -86,8 +86,8 @@ const items = [
     aliases: ["imm"],
     price: 1000,
     description: "Kamu dapat hidup kembali jika mati, hanya 1x penggunaan",
-    effect: async ({ senderId, userPath, quantity, db, ctx, item }) => {
-      if(`${userPath}.immortality` === true) {
+    effect: async ({ senderId, userPath, userData, quantity, db, ctx, item }) => {
+      if(userData.immortality === true) {
         return ctx.reply(quote(` Kamu sudah punya Immortality!`));
       }
       if (quantity > 1) {

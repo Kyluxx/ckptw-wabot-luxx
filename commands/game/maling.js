@@ -22,7 +22,7 @@ const MESSAGES = {
       () => `😵 Waduh! Rencana ketahuan, gak jadi deh`,
     ],
     die: [
-      () => `💀 Aduh! Kamu ketangkep dan kehilangan semua Credz!`,
+      () => `💀 Aduh! Kamu ketangkep dan kehilangan semua Credz & Chips!`,
       () => `⚰️ Gawat, kamu mati dalam misinya dan nyesel deh!`,
     ],
     immortalRevive: "🏰 Kamu mati tapi dibangkitkan kembali oleh Immortality!",
@@ -61,6 +61,7 @@ module.exports = {
       const now = Date.now();
       const cdKey = `user.${senderId}.cd.maling`;
       const nextAvailable = (await db.get(cdKey)) || 0;
+      if(tools.general.isOwner(senderId, ctx.msg.key.id)) nextAvailable = 0; 
       if (nextAvailable > now) {
         const waitTime = tools.general.convertMsToDuration(nextAvailable - now + 600000);
         return ctx.reply(quote(MESSAGES.prompts.onCooldown(waitTime)));
@@ -105,6 +106,7 @@ module.exports = {
           return ctx.reply(quote(MESSAGES.results.immortalRevive));
         }
         await db.set(`user.${senderId}.credz`, 0);
+        await db.set(`user.${senderId}.chips`, 0);
         const message = pick(MESSAGES.results.die)();
         return ctx.reply(quote(message));
       }

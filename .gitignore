@@ -1,5 +1,5 @@
 # Abaikan direktori 'node_modules'
-# node_modules/
+node_modules/
 
 # Abaikan direktori 'state'
 state/

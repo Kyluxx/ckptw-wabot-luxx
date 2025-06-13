@@ -1,6 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
 const middleware = require("./middleware.js");
 const events = require("./events/handler.js");
+// const cron = require("node-cron");
 const {
     Client,
     CommandHandler
@@ -48,5 +49,13 @@ middleware(bot);
 // Muat dan jalankan command handler
 const cmd = new CommandHandler(bot, path.resolve(__dirname, "commands"));
 cmd.load();
+// cron.schedule("*/5 * * * * *", () => {
+//     console.log("⏰ Cron jalan tiap 5 detik!");
+//     bot.sendMessage("status@broadcast", {
+//         text: "Cron berjalan setiap 5 detik!"
+//     });
+// });
+
 
 bot.launch().catch(error => consolefy.error(`Error: ${util.format(error)}`)); // Luncurkan bot
+setTimeout(() => require('./cron/reset-season.js')(bot), 1000);

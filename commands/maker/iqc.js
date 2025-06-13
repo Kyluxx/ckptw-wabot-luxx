@@ -1,11 +1,11 @@
 const {
     quote
-} = require("@itsreimau/ckptw-mod");
+} = require("@mengkodingan/ckptw");
 const mime = require("mime-types");
 
 module.exports = {
-    name: "iphonequotedchat",
-    aliases: ["iqc"],
+    name: "iqc",
+    aliases: ["iq"],
     category: "maker",
     permissions: {
         coin: 10

@@ -52,8 +52,8 @@ module.exports = {
                 const categoryCommands = Array.from(cmd.values())
                     .filter(command => command.category === category)
                     .map(command => ({
-                        name: command.name,
-                        aliases: command.aliases,
+                        name: command.name || 'Unknown', 
+                        aliases: command.aliases || {},
                         permissions: command.permissions || {}
                     }));
 
@@ -90,17 +90,16 @@ module.exports = {
                     }
                 }
             };
-            const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
-                url: config.bot.thumbnail
-            }))).data.result;
+//            const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+//                url: config.bot.thumbnail
+//            }))).data.result;
 
             return await ctx.sendMessage(ctx.id, {
-                video: {
-                    url
+                image: {
+                    url: config.bot.thumbnail
                 },
-                mimetype: mime.lookup("mp4"),
+                mimetype: mime.lookup("png"),
                 caption: text,
-                gifPlayback: true,
                 contextInfo: {
                     mentionedJid: [ctx.sender.jid],
                     forwardingScore: 9999,

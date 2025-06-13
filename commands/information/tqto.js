@@ -1,6 +1,7 @@
 const {
-    quote
+    quote,
 } = require("@mengkodingan/ckptw");
+const mime = require("mime-types");
 
 module.exports = {
     name: "tqto",
@@ -8,6 +9,55 @@ module.exports = {
     category: "information",
     permissions: {},
     code: async (ctx) => {
+
+	const text = `_Special Thanks To_` +
+	    "\n" +
+	    `${quote("────────────────────")}\n` + 
+	    `${quote("Allah SWT")}\n` +
+            `${quote("Orang tua saya")}\n` +
+            `${quote("──────Developer──────")}\n` +
+            `${quote("ItsReimau (https://github.com/itsreimau)")}\n` +
+            `${quote("Rizky Pratama | Kyluxx (https://github.com/Kyluxx)")}\n` +
+            `${quote("───────Donatur──────")}\n` +
+            `${quote("Arya (https://www.instagram.com/aryaahahahahaha)")}\n` +
+	    `${quote("────────────────────")}\n` +
+            `${quote("Dan kepada semua orang yang telah membantu dalam pengembangan bot ini ^^")}\n` +
+            "\n" +
+            config.msg.footer;
+
+
+	const fakeQuotedText = {
+                key: {
+                    participant: "13135550002@s.whatsapp.net",
+                    remoteJid: "status@broadcast"
+                },
+                message: {
+                    extendedTextMessage: {
+                        text: config.msg.note,
+                        title: config.bot.name
+                    }
+                }
+            };
+//            const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+//                url: config.bot.thumbnail
+//            }))).data.result;
+
+            return await ctx.reply({
+                image: {
+                    url: config.bot.thumbnail
+                },
+                mimetype: mime.lookup("png"),
+                caption: text,
+                contextInfo: {
+                    mentionedJid: [ctx.sender.jid],
+                    forwardingScore: 9999,
+                    isForwarded: true
+                },
+            }, {
+                quoted: fakeQuotedText
+            });
+
+/*
         return await ctx.reply(
             `${quote("Allah SWT")}\n` +
             `${quote("Orang tua saya")}\n` +
@@ -41,5 +91,6 @@ module.exports = {
             "\n" +
             config.msg.footer
         ); // Jika Anda tidak menghapus ini, terima kasih!
+*/
     }
 };

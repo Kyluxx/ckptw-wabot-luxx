@@ -60,7 +60,7 @@ module.exports = {
       // Cooldown check
       const now = Date.now();
       const cdKey = `user.${senderId}.cd.maling`;
-      const nextAvailable = (await db.get(cdKey)) || 0;
+      let nextAvailable = (await db.get(cdKey)) || 0;
       if(tools.general.isOwner(senderId, ctx.msg.key.id)) nextAvailable = 0; 
       if (nextAvailable > now) {
         const waitTime = tools.general.convertMsToDuration(nextAvailable - now + 600000);

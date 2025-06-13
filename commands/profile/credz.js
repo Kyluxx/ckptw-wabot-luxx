@@ -23,17 +23,19 @@ module.exports = {
       const wallet = targetDb.credz || 0;
       const bank = targetDb.bank || 0;
       const bankLimit = targetDb.bankLimit ?? 100;
+      const chips = targetDb.chips || 0;
       
       // Build response
       const userLabel = targetId === senderId ? "Anda" : `Pengguna ${targetId}`;
       const resp = `💰 ${userLabel} memiliki:\n` +
       `• Wallet: ${monospace(wallet.toString())} Credz\n` +
-      `• Bank : ${monospace(bank.toString())}/${monospace(bankLimit.toString())} Credz`;
+      `• Bank : ${monospace(bank.toString())}/${monospace(bankLimit.toString())} Credz\n` +
+      `• Chips : ${monospace(chips.toString())} Chips`
       
       // Unlimited for owner/premium
-      if ((tools.general.isOwner(senderId, ctx.msg.key.id) && !targetJid) || (userDb.premium && !targetJid)) {
-        return await ctx.reply(quote("🤑 Anda memiliki Credz tak terbatas."));
-      }
+//      if ((tools.general.isOwner(senderId, ctx.msg.key.id) && !targetJid) || (userDb.premium && !targetJid)) {
+//        return await ctx.reply(quote("🤑 Anda memiliki Credz tak terbatas."));
+//      }
 
       return await ctx.reply(quote(resp));
     } catch (error) {

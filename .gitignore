@@ -14,4 +14,4 @@ state/
 package-lock.json
 
 # Ignore sessions created
-# mysql/
+mysql/

@@ -14,6 +14,7 @@ module.exports = {
           const senderName = ctx.sender.pushName;
           const senderJid = ctx.sender.jid;
           const senderId = tools.general.getID(senderJid);
+        //   const thumbnail = config.bot.thumbnail || "https://raw.githubusercontent.com/Kyluxx/ckptw-wabot-luxx/playground/wp10030222-hu-tao-pc-wallpapers.jpg";
 
           const leaderboardData = Object.entries((await db.toJSON()).user)
               .map(([id, data]) => ({
@@ -50,14 +51,14 @@ module.exports = {
               config.msg.footer;
 
           try {
-              const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
-                  url: canvas
-              }))).data.result;
+            //   const url = (await axios.get(tools.api.createUrl("http://vid2aud.hofeda4501.serv00.net", "/api/img2vid", {
+            //       url: canvas
+            //   }))).data.result;
               return await ctx.reply({
-                  video: {
-                      url
+                  image: {
+                      url: canvas
                   },
-                  mimetype: mime.lookup("mp4"),
+                  mimetype: mime.lookup("png"),
                   caption: text,
                   gifPlayback: true
               });

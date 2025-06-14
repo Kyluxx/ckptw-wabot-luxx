@@ -1,6 +1,7 @@
 // Impor modul dan dependensi yang diperlukan
 const middleware = require("./middleware.js");
 const events = require("./events/handler.js");
+const mathGame = require('./cron/math.js');
 // const cron = require("node-cron");
 const {
     Client,
@@ -58,4 +59,7 @@ cmd.load();
 
 
 bot.launch().catch(error => consolefy.error(`Error: ${util.format(error)}`)); // Luncurkan bot
-setTimeout(() => require('./cron/reset-season.js')(bot), 1000);
+setTimeout(() => {
+    require('./cron/reset-season.js')(bot)
+    mathGame(bot, db); // Jalankan cron job untuk reset season dan game matematika
+}, 1000);

@@ -21,10 +21,13 @@ module.exports = {
                 .sort((a, b) => b.credz - a.credz);
 
             const userRank = leaderboardData.findIndex(user => user.id === senderId) + 1;
-            const topUsers = leaderboardData.slice(2, 12);
+            const topUsers = leaderboardData
+                .filter(user => user.credz !== 696969)
+                .slice(0, 10);
             let resultText = "";
 
             topUsers.forEach((user, index) => {
+                // if (user.credz === 696969) return; // Skip self in top 10
                 const isSelf = user.id === senderId;
                 const displayName = isSelf ? `@${user.id}` : user.username ? user.username : `${user.id}`;
                 resultText += quote(`${index + 1}. ${displayName} - Credz: ${user.credz}\n`);

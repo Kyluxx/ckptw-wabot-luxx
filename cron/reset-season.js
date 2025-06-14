@@ -46,7 +46,7 @@ module.exports = (bot) => {
         .slice(0, 3);
 
       // Hadiah
-      const winPrizes = [20000, 10000, 5000];
+      const winPrizes = [15000, 7500, 5000];
       const lvlMul    = [10, 7, 5];
 
       // Bangun teks
@@ -93,7 +93,8 @@ module.exports = (bot) => {
         ...Object.keys(users).map(id =>
           Promise.all([
             db.set(`user.${id}.xp`, 0),
-            db.set(`user.${id}.level`, 0)
+            db.set(`user.${id}.level`, 0),
+            db.set(`user.${id}.winGame`, 0)
           ])
         )
       ]);
